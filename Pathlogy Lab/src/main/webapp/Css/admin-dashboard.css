@@ -1,0 +1,127 @@
+/* Google Font */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: #eef2f7;
+  margin: 0;
+}
+
+/* Main content */
+.main-content {
+  margin-left: 220px;
+  padding: 25px;
+}
+
+/* Cards */
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.card-box {
+  border-radius: 15px;
+  padding: 20px;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s;
+}
+
+.card-box:hover {
+  transform: translateY(-5px);
+}
+
+.card-blue {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.card-green {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+}
+
+.card-orange {
+  background: linear-gradient(135deg, #f97316, #ea580c);
+}
+
+.card-red {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+/* Card Text */
+.card-box h5 {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.card-box h3 {
+  font-size: 28px;
+  margin-top: 10px;
+}
+
+/* Form Section */
+.card {
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Inputs */
+.form-control {
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.form-control:focus {
+  border-color: #3b82f6;
+  box-shadow: none;
+}
+
+/* Buttons */
+.btn-primary {
+  border-radius: 10px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border: none;
+}
+
+.btn-success {
+  border-radius: 8px;
+}
+
+.btn-danger {
+  border-radius: 8px;
+}
+
+/* Table */
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table thead {
+  background: #1e293b;
+  color: #fff;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Search Input */
+#searchInput {
+  border-radius: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .main-content {
+    margin-left: 0;
+  }
+}

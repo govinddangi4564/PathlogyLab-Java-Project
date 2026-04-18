@@ -1,0 +1,230 @@
+@charset "UTF-8";
+
+:root {
+	--brand-teal: #0b7a75;
+	--brand-cyan: #14b8a6;
+	--brand-sand: #fff5e6;
+	--brand-ink: #0f172a;
+	--brand-muted: #475569;
+	--brand-soft: #e2f7f3;
+	--brand-accent: #f97316;
+	--radius-xl: 24px;
+	--radius-lg: 18px;
+	--shadow-soft: 0 18px 45px rgba(11, 122, 117, 0.12);
+}
+
+body {
+	font-family: 'Manrope', sans-serif;
+	background: radial-gradient(circle at 10% 10%, rgba(20, 184, 166, 0.15),
+		transparent 30%),
+		radial-gradient(circle at 90% 20%, rgba(249, 115, 22, 0.12),
+		transparent 35%),
+		linear-gradient(180deg, #f8fffe 0%, #ffffff 30%, #fdfcf8 100%);
+	color: var(--brand-ink);
+}
+
+h1, h2, h3, h4, h5, .navbar-brand {
+	font-family: 'Sora', sans-serif;
+}
+
+.section-gap {
+	padding: 80px 0;
+}
+
+.top-nav {
+	background: rgba(255, 255, 255, 0.78);
+	backdrop-filter: blur(8px);
+	border-bottom: 1px solid rgba(11, 122, 117, 0.14);
+}
+
+.badge-pill {
+	background: var(--brand-soft);
+	color: var(--brand-teal);
+	padding: 8px 14px;
+	border-radius: 999px;
+	font-weight: 700;
+	letter-spacing: 0.2px;
+}
+
+.hero-card {
+	border: 1px solid rgba(11, 122, 117, 0.14);
+	border-radius: var(--radius-xl);
+	padding: 24px;
+	background: #ffffff;
+	box-shadow: var(--shadow-soft);
+}
+
+.hero-metric {
+	background: linear-gradient(140deg, #ffffff 0%, #f4fffd 100%);
+	border: 1px solid rgba(11, 122, 117, 0.15);
+	border-radius: var(--radius-lg);
+	padding: 16px;
+}
+
+.hero-metric h3 {
+	font-size: 1.7rem;
+	margin-bottom: 0;
+	color: var(--brand-teal);
+}
+
+.info-card, .step-card, .testimonial-card, .faq-box, .contact-box {
+	background: #fff;
+	border: 1px solid rgba(11, 122, 117, 0.14);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-soft);
+}
+
+.info-card {
+	padding: 24px;
+	height: 100%;
+}
+
+.info-card .icon-wrap, .step-icon {
+	width: 56px;
+	height: 56px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 14px;
+	font-size: 1.25rem;
+	background: var(--brand-soft);
+	color: var(--brand-teal);
+	margin-bottom: 16px;
+}
+
+.step-card {
+	padding: 22px;
+	height: 100%;
+	position: relative;
+}
+
+.step-number {
+	position: absolute;
+	top: 16px;
+	right: 18px;
+	font-size: 0.9rem;
+	font-weight: 800;
+	color: rgba(11, 122, 117, 0.35);
+}
+
+.stat-strip {
+	background: linear-gradient(100deg, #0b7a75 0%, #14b8a6 58%, #11a89a 100%);
+	color: #fff;
+	border-radius: var(--radius-xl);
+	padding: 26px 28px;
+}
+
+.testimonial-card {
+	padding: 24px;
+	height: 100%;
+}
+
+.testimonial-card p {
+	color: var(--brand-muted);
+}
+
+.trust-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 14px;
+	border-radius: 999px;
+	background: #fff;
+	border: 1px solid rgba(11, 122, 117, 0.2);
+	font-weight: 600;
+	font-size: 0.92rem;
+	margin: 6px;
+}
+
+.faq-box {
+	padding: 12px;
+}
+
+.contact-box {
+	padding: 28px;
+}
+
+.form-control {
+	border-radius: 12px;
+	padding: 12px 14px;
+	border: 1px solid rgba(11, 122, 117, 0.25);
+}
+
+.form-control:focus {
+	border-color: var(--brand-cyan);
+	box-shadow: 0 0 0 0.2rem rgba(20, 184, 166, 0.18);
+}
+
+.btn-brand {
+	background: linear-gradient(90deg, var(--brand-teal) 0%,
+		var(--brand-cyan) 100%);
+	color: #fff;
+	border: none;
+	padding: 10px 20px;
+	font-weight: 700;
+	border-radius: 12px;
+}
+
+.btn-brand:hover {
+	color: #fff;
+	transform: translateY(-1px);
+}
+
+.btn-outline-brand {
+	border: 2px solid var(--brand-teal);
+	color: var(--brand-teal);
+	font-weight: 700;
+	border-radius: 12px;
+	padding: 8px 18px;
+}
+
+.btn-outline-brand:hover {
+	background: var(--brand-teal);
+	color: #fff;
+}
+
+.reveal {
+	opacity: 0;
+	transform: translateY(20px);
+	animation: riseIn 0.7s ease forwards;
+}
+
+.reveal.delay-1 {
+	animation-delay: 0.1s;
+}
+
+.reveal.delay-2 {
+	animation-delay: 0.2s;
+}
+
+.reveal.delay-3 {
+	animation-delay: 0.3s;
+}
+
+@keyframes riseIn {to { opacity:1;
+	transform: translateY(0);
+}
+
+}
+.footer {
+	background: #0e3b3a;
+	color: #e5f6f4;
+}
+
+.footer a {
+	color: #c9efeb;
+	text-decoration: none;
+}
+
+.footer a:hover {
+	color: #fff;
+}
+
+@media ( max-width : 768px) {
+	.section-gap {
+		padding: 60px 0;
+	}
+	.hero-title {
+		font-size: 2rem;
+	}
+}
