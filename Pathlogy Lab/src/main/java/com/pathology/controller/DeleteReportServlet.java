@@ -5,28 +5,34 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import java.io.IOException;
 
-@WebServlet("/logout")
-public class LogoutServlet extends HttpServlet {
+import com.pathology.dao.ReportDao;
+
+@WebServlet("/deleteReport")
+public class DeleteReportServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public LogoutServlet() {
+	public DeleteReportServlet() {
 		super();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		HttpSession session = request.getSession(false);
+		int id = Integer.parseInt(request.getParameter("id"));
 
-		if (session != null) {
-			session.invalidate();
+		ReportDao dao = new ReportDao();
+
+		int i = dao.deleteReport(id);
+
+		if (i != 0) {
+			request.getSession().setAttribute("msg", "Report deleted successfully");
+		} else {
+			request.getSession().setAttribute("msg", "Delete failed");
 		}
 
-		response.sendRedirect(request.getContextPath() + "/Pages/login.jsp");
+		response.sendRedirect("viewAllReports");
 
 	}
 

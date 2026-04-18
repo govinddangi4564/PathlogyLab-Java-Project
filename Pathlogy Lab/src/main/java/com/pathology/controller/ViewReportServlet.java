@@ -5,29 +5,31 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.util.List;
 
-@WebServlet("/logout")
-public class LogoutServlet extends HttpServlet {
+import com.pathology.dao.ReportDao;
+import com.pathology.model.Report;
+
+@WebServlet("/viewReport")
+public class ViewReportServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public LogoutServlet() {
+	public ViewReportServlet() {
 		super();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		HttpSession session = request.getSession(false);
+		String pId = request.getParameter("pId");
+		ReportDao dao = new ReportDao();
 
-		if (session != null) {
-			session.invalidate();
-		}
+		List<Report> list = dao.patientReport(pId);
 
-		response.sendRedirect(request.getContextPath() + "/Pages/login.jsp");
-
+		request.setAttribute("reportList", list);
+		request.getRequestDispatcher("./Pages/viewAllReports.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

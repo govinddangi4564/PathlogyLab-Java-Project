@@ -1,3 +1,5 @@
+<%@page import="com.pathology.dao.ReportDao"%>
+<%@page import="com.pathology.dao.PatientDao"%>
 <%@page import="com.pathology.dao.UserDao"%>
 <%@page import="com.mysql.cj.Session"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -122,10 +124,12 @@
 
 
 	<%
-	UserDao dao = new UserDao();
-	int totalPatient = dao.totalPatient();
-	int totalReports = dao.totalReports();
-	int todaysReports = dao.todaysReportCount();
+	PatientDao pdao = new PatientDao();
+	ReportDao rdao = new ReportDao();
+	
+	int patient = pdao.totalPatients();
+	int report = rdao.totalReports();
+	int pendingReport = rdao.totalPendingReports();
 	%>
 
 
@@ -138,27 +142,26 @@
 			<div class="stat-card">
 				<p class="label mb-0">Total Patients</p>
 				<p class="value">
-					<%=totalPatient%>
+					<%=patient%>
 				</p>
 				<div class="meta">+8 this week</div>
 			</div>
 			<div class="stat-card">
 				<p class="label mb-0">Total Reports</p>
 				<p class="value">
-					<%=totalReports%>
+					<%=report%>
 				</p>
 				<div class="meta">95% delivery success</div>
 			</div>
 			<div class="stat-card">
 				<p class="label mb-0">Today's Uploads</p>
-				<p class="value">
-					<%=todaysReports%>
+				<p class="value">null
 				</p>
 				<div class="meta">12 pending review</div>
 			</div>
 			<div class="stat-card">
 				<p class="label mb-0">Pending Reports</p>
-				<p class="value">10</p>
+				<p class="value"><%=pendingReport %></p>
 				<div class="meta">Needs action today</div>
 			</div>
 		</div>

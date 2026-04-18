@@ -27,8 +27,9 @@ public class Report {
 		this.status = status;
 	}
 
-	public Report(String patientId, String reportName, String reportPath, Date reportDate, String status) {
+	public Report(int id, String patientId, String reportName, String reportPath, Date reportDate, String status) {
 		super();
+		this.id = id;
 		this.patientId = patientId;
 		this.reportName = reportName;
 		this.reportPath = reportPath;

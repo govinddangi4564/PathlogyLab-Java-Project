@@ -1,3 +1,4 @@
+<%@page import="com.pathology.dao.PatientDao"%>
 <%@page import="com.pathology.model.Patient"%>
 <%@page import="java.util.List"%>
 <%@page import="com.pathology.model.Report"%>
@@ -40,6 +41,24 @@ body {
 	color: #64748b;
 	margin-bottom: 24px;
 	font-size: 1rem;
+}
+
+.summary-box {
+	background: #fff;
+	border: 1px solid #e2e8f0;
+	border-radius: 14px;
+	padding: 14px;
+}
+
+.summary-box .title {
+	font-size: 0.85rem;
+	color: #64748b;
+}
+
+.summary-box .count {
+	font-size: 1.35rem;
+	font-weight: 700;
+	margin: 2px 0 0;
 }
 
 .panel {
@@ -206,9 +225,30 @@ body {
 	<%
 	List<Patient> list = (List<Patient>) request.getAttribute("reportList");
 	%>
+	
+	<%
+	PatientDao dao = new PatientDao();
+	int totalPatient = dao.totalPatients();
+	%>
+	
 	<%@ include file="adminSidebar.jsp"%>
 
 	<div class="main-content" style="margin-left: 260px; padding: 32px;">
+
+		<%
+		String msg = (String) session.getAttribute("msg");
+		if (msg != null) {
+		%>
+		<div class="alert alert-success alert-dismissible fade show"
+			role="alert">
+			<%=msg%>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+		<%
+		session.removeAttribute("msg");
+		}
+		%>
+
 		<div class="dashboard-header">
 			<h2 class="page-title">Patient Reports Overview</h2>
 			<p class="page-subtitle">Track, download, and review all patient
@@ -217,10 +257,29 @@ body {
 
 		<div class="panel">
 			<div class="table-header-row">
+				<div class="summary-box">
+					<div class="title">Total Patients</div>
+					<div class="count"><%=totalPatient %></div>
+				</div>
 				<div class="search-box">
 					<i class="fa-solid fa-search"></i> <input type="text"
 						class="form-control"
-						placeholder="Search by Patient ID or Report Name...">
+						placeholder="Search by Patient ID or Patient Name...">
+				</div>
+
+				<div class="dropdown">
+					<button class="btn btn-secondary dropdown-toggle"
+						data-bs-toggle="dropdown">Sort By</button>
+					<ul class="dropdown-menu">
+						<li><a class="dropdown-item"
+							href="sortPatients?sort=id&order=asc">Newest First</a></li>
+						<li><a class="dropdown-item"
+							href="sortPatients?sort=id&order=desc">Oldest First</a></li>
+						<li><a class="dropdown-item"
+							href="sortPatients?sort=patient_name&order=asc">Name (A → Z)</a></li>
+						<li><a class="dropdown-item"
+							href="sortPatients?sort=patient_name&order=desc">Name (Z → A)</a></li>
+					</ul>
 				</div>
 				<div>
 					<button class="btn btn-primary d-flex align-items-center gap-2"
@@ -234,30 +293,35 @@ body {
 				<table class="table table-hover align-middle mb-0">
 					<thead>
 						<tr>
+							<th>S.No.</th>
 							<th>Patient ID</th>
 							<th>Patient Name</th>
 							<th>Patient Email</th>
 							<th>Patient Mobile</th>
-							<th class="text-end">Actions</th>
+							<th>Actions</th>
 						</tr>
 					</thead>
 
 					<%
+					int count = 1;
 					if (list != null) {
 						for (Patient p : list) {
 					%>
 
 					<tbody id="reportTable">
 						<tr>
+							<td><%=count++%></td>
 							<td><%=p.getPatientId()%></td>
 							<td><%=p.getPatientName()%></td>
 							<td><%=p.getPatientEmail()%></td>
 							<td><%=p.getPatientMobile()%></td>
 
-							<td><a href="viewReport?id=/<%=p.getPatientId()%>"
+							<td><a href="viewReport?pId=<%=p.getPatientId()%>"
 								class="btn btn-success btn-sm"> View Reports </a> <a
-								href="deletePatient?id=/<%=p.getPatientId()%>"
-								class="btn btn-outline-danger btn-sm"> View Reports </a></td>
+								href="deletePatient?pId=<%=p.getPatientId()%>"
+								class="btn btn-outline-danger btn-sm"
+								onclick="return confirm('Are you sure you want to delete this patient?');">
+									Delete Patient </a></td>
 						</tr>
 					</tbody>
 

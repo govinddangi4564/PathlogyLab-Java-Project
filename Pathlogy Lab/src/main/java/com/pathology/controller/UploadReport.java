@@ -45,7 +45,8 @@ public class UploadReport extends HttpServlet {
 		String reportStatus = request.getParameter("reportStatus");
 
 		Part pt = request.getPart("reportFile");
-		String path = "D:\\All Codes\\Java Projects\\Pathlogy Lab\\PathologyLab\\src\\main\\webapp\\reports\\";
+		String path = "D:\\All Codes\\Java FullStack Projects\\Pathlogy Lab\\Pathlogy Lab\\src\\main\\webapp\\reports\\";
+
 		String report = title + "_" + pt.getSubmittedFileName();
 		pt.write(path + File.separator + report);
 
@@ -56,12 +57,12 @@ public class UploadReport extends HttpServlet {
 		int i = dao.uploadReport(r);
 
 		if (i != 0) {
-			response.sendRedirect("Pages/admin-dashboard.jsp");
+			request.getSession().setAttribute("msg", "Report update successfully");
 		} else {
-			request.setAttribute("msg", "Report Not Upload");
-			request.getRequestDispatcher("./Pages/uploadReport.jsp").forward(request, response);
-
+			request.getSession().setAttribute("msg", "Something Went Wrong.");
 		}
+
+		response.sendRedirect("./Pages/uploadReport.jsp");
 
 	}
 

@@ -13,9 +13,12 @@ public class UserDao {
 	public int signup(User u) {
 		int i = 0;
 
-		Connection con = DBConnection.getConnection();
-		try (PreparedStatement pst = con
-				.prepareStatement("insert into users (name, email, mobile, password, role) value(?,?,?,?,?)");) {
+		try (Connection con = DBConnection.getConnection()) {
+
+			// 🔹 Step 1: Insert user
+			PreparedStatement pst = con.prepareStatement(
+					"INSERT INTO users (name, email, mobile, password, role) VALUES (?,?,?,?,?)",
+					PreparedStatement.RETURN_GENERATED_KEYS);
 
 			pst.setString(1, u.getName());
 			pst.setString(2, u.getEmail());
@@ -25,7 +28,34 @@ public class UserDao {
 
 			i = pst.executeUpdate();
 
-		} catch (SQLException e) {
+			// 🔹 Step 2: Get generated user_id
+			ResultSet rs = pst.getGeneratedKeys();
+			int userId = 0;
+			if (rs.next()) {
+				userId = rs.getInt(1);
+			}
+
+			// 🔹 Step 3: Check if patient already exists
+			PreparedStatement check = con
+					.prepareStatement("SELECT id FROM patients WHERE patient_email = ? OR patient_mobile = ?");
+			check.setString(1, u.getEmail());
+			check.setString(2, u.getMobile());
+
+			ResultSet rsCheck = check.executeQuery();
+
+			if (rsCheck.next()) {
+				// Patient exists → update user_id
+				PreparedStatement update = con.prepareStatement(
+						"UPDATE patients SET user_id = ? WHERE patient_email = ? OR patient_mobile = ?");
+
+				update.setInt(1, userId);
+				update.setString(2, u.getEmail());
+				update.setString(3, u.getMobile());
+
+				update.executeUpdate();
+			}
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

@@ -226,6 +226,21 @@ to {
 	<%@ include file="adminSidebar.jsp"%>
 
 	<div class="main-content">
+
+		<%
+		String msg = (String) session.getAttribute("msg");
+		if (msg != null) {
+		%>
+		<div id="alertMsg"
+			class="alert alert-success alert-dismissible fade show" role="alert">
+			<%=msg%>
+			<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+		</div>
+		<%
+		session.removeAttribute("msg");
+		}
+		%>
+
 		<div class="upload-container">
 			<div class="glass-card">
 
@@ -267,6 +282,17 @@ to {
 			</div>
 		</div>
 	</div>
+
+	<script>
+setTimeout(function() {
+    let alert = document.getElementById("alertMsg");
+    if (alert) {
+        alert.classList.remove("show");
+        alert.classList.add("fade");
+        setTimeout(() => alert.remove(), 500);
+    }
+}, 3000); // 3 seconds
+</script>
 
 </body>
 

@@ -5,29 +5,36 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import java.io.IOException;
 
-@WebServlet("/logout")
-public class LogoutServlet extends HttpServlet {
+import com.pathology.dao.PatientDao;
+import com.pathology.dao.ReportDao;
+import com.sun.net.httpserver.Request;
+
+@WebServlet("/deletePatient")
+public class DeletePatientServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public LogoutServlet() {
+	public DeletePatientServlet() {
 		super();
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		HttpSession session = request.getSession(false);
+		String pId = request.getParameter("pId");
+		PatientDao dao = new PatientDao();
 
-		if (session != null) {
-			session.invalidate();
+		
+		int i = dao.deletePatient(pId);
+
+		if (i != 0) {
+			request.getSession().setAttribute("msg", "Patient deleted successfully");
+		} else {
+			request.getSession().setAttribute("msg", "Delete failed");
 		}
 
-		response.sendRedirect(request.getContextPath() + "/Pages/login.jsp");
-
+		response.sendRedirect("viewPatients");
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
