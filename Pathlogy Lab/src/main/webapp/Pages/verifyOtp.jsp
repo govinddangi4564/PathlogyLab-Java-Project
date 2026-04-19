@@ -6,13 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Login | Pathology Lab</title>
+<title>Verify OTP | Pathology Lab</title>
 
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-	crossorigin="anonymous">
+	rel="stylesheet" crossorigin="anonymous">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
@@ -20,7 +18,6 @@
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
-	integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW0yAj8NmCah0bV3yQX4DJLGcJ8rP+M5iP4Y1wFgmfA=="
 	crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
@@ -116,28 +113,6 @@ h1, h2, h3, h4, h5 {
 	text-decoration: underline;
 }
 
-.role-options {
-	display: flex;
-	gap: 18px;
-	flex-wrap: wrap;
-	margin-top: 6px;
-}
-
-.role-option {
-	display: inline-flex;
-	align-items: center;
-	gap: 7px;
-	padding: 8px 12px;
-	border: 1px solid rgba(11, 122, 117, 0.28);
-	border-radius: 10px;
-	background: #f8fffe;
-	cursor: pointer;
-}
-
-.role-option input[type="radio"] {
-	accent-color: var(--brand-teal);
-}
-
 @media ( max-width : 992px) {
 	.form-panel {
 		padding: 26px;
@@ -147,21 +122,6 @@ h1, h2, h3, h4, h5 {
 </head>
 
 <body>
-
-	<%
-	String msg = (String) request.getAttribute("msg");
-	%>
-
-	<%
-	if (msg != null) {
-	%>
-	<div class="alert alert-danger text-center" role="alert">
-		<%=msg%>
-	</div>
-	<%
-	}
-	%>
-
 	<div class="auth-wrap">
 		<div class="container">
 			<div class="row justify-content-center">
@@ -170,44 +130,30 @@ h1, h2, h3, h4, h5 {
 						<div class="form-panel">
 							<div
 								class="d-flex justify-content-between align-items-center mb-3">
-								<h4 class="fw-bold mb-0">Sign In</h4>
-								<a class="back-link" href="../index.jsp">← Back</a>
+								<h4 class="fw-bold mb-0">Enter OTP</h4>
+								<a class="back-link" href="forgetPassword.jsp">← Back</a>
 							</div>
 
+							<div class="alert alert-success text-center mb-3" role="alert">
+								OTP sent successfully to your email.</div>
+
 							<form method="post"
-								action="${pageContext.request.contextPath}/login">
+								action="${pageContext.request.contextPath}/verifyOtp">
+								<p class="text-muted mb-4" style="font-size: 0.95rem;">Please
+									enter the 6-digit OTP sent to your email.</p>
 								<div class="mb-3">
-									<label class="form-label" for="loginId">Email or Mobile</label>
-									<input type="text" class="form-control" id="loginId"
-										name="loginId" placeholder="Enter email or mobile number"
-										required>
+									<label class="form-label" for="otp">Enter OTP</label> <input
+										type="text" class="form-control" id="otp" name="otp"
+										placeholder="Enter 6-digit OTP" required maxlength="6"
+										pattern="\d{6}">
 								</div>
-								<div class="mb-3">
-									<label class="form-label" for="password">Password</label> <input
-										type="password" class="form-control" id="password"
-										name="password" placeholder="Enter password" required>
-									<div class="text-end mt-2">
-										<a href="forgetPassword.jsp" class="back-link"
-											style="font-size: 0.9rem;">Forgot Password?</a>
-									</div>
+								<button class="btn btn-brand w-100 mt-2" type="submit">Verify
+									OTP</button>
+								<div class="text-center mt-3">
+									<a href="forgetPassword.jsp" class="back-link"
+										style="font-size: 0.9rem;">Change Email</a>
 								</div>
-								<div class="mb-3">
-									<label class="form-label d-block">Role</label>
-									<div class="role-options">
-										<label class="role-option" for="roleUser"> <input
-											type="radio" id="roleUser" name="role" value="USER" checked>
-											<span>User</span>
-										</label> <label class="role-option" for="roleAdmin"> <input
-											type="radio" id="roleAdmin" name="role" value="ADMIN">
-											<span>Admin</span>
-										</label>
-									</div>
-								</div>
-								<button class="btn btn-brand w-100" type="submit">Login</button>
 							</form>
-							<p class="signup-text mb-0">
-								Don't have an account? <a href="signup.jsp">Sign Up</a>
-							</p>
 						</div>
 					</div>
 				</div>
@@ -217,9 +163,7 @@ h1, h2, h3, h4, h5 {
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
 		crossorigin="anonymous"></script>
-
 </body>
 
 </html>

@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Login | Pathology Lab</title>
+<title>Update Password | Pathology Lab</title>
 
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
@@ -116,28 +116,6 @@ h1, h2, h3, h4, h5 {
 	text-decoration: underline;
 }
 
-.role-options {
-	display: flex;
-	gap: 18px;
-	flex-wrap: wrap;
-	margin-top: 6px;
-}
-
-.role-option {
-	display: inline-flex;
-	align-items: center;
-	gap: 7px;
-	padding: 8px 12px;
-	border: 1px solid rgba(11, 122, 117, 0.28);
-	border-radius: 10px;
-	background: #f8fffe;
-	cursor: pointer;
-}
-
-.role-option input[type="radio"] {
-	accent-color: var(--brand-teal);
-}
-
 @media ( max-width : 992px) {
 	.form-panel {
 		padding: 26px;
@@ -148,20 +126,6 @@ h1, h2, h3, h4, h5 {
 
 <body>
 
-	<%
-	String msg = (String) request.getAttribute("msg");
-	%>
-
-	<%
-	if (msg != null) {
-	%>
-	<div class="alert alert-danger text-center" role="alert">
-		<%=msg%>
-	</div>
-	<%
-	}
-	%>
-
 	<div class="auth-wrap">
 		<div class="container">
 			<div class="row justify-content-center">
@@ -170,44 +134,33 @@ h1, h2, h3, h4, h5 {
 						<div class="form-panel">
 							<div
 								class="d-flex justify-content-between align-items-center mb-3">
-								<h4 class="fw-bold mb-0">Sign In</h4>
-								<a class="back-link" href="../index.jsp">← Back</a>
+								<h4 class="fw-bold mb-0">New Password</h4>
 							</div>
 
-							<form method="post"
-								action="${pageContext.request.contextPath}/login">
+							<div class="alert alert-success text-center mb-3" role="alert">
+								Mock: OTP verified successfully. Let's set a new password.</div>
+
+							<!-- Step 3: Update Password Form (MOCKED TO REDIRECT TO LOGIN) -->
+							<form method="post" action="login.jsp">
+								<p class="text-muted mb-4" style="font-size: 0.95rem;">Set a
+									new password for your account.</p>
 								<div class="mb-3">
-									<label class="form-label" for="loginId">Email or Mobile</label>
-									<input type="text" class="form-control" id="loginId"
-										name="loginId" placeholder="Enter email or mobile number"
-										required>
+									<label class="form-label" for="newPassword">New
+										Password</label> <input type="password" class="form-control"
+										id="newPassword" name="newPassword"
+										placeholder="Enter new password" required minlength="6">
 								</div>
 								<div class="mb-3">
-									<label class="form-label" for="password">Password</label> <input
-										type="password" class="form-control" id="password"
-										name="password" placeholder="Enter password" required>
-									<div class="text-end mt-2">
-										<a href="forgetPassword.jsp" class="back-link"
-											style="font-size: 0.9rem;">Forgot Password?</a>
-									</div>
+									<label class="form-label" for="confirmPassword">Confirm
+										Password</label> <input type="password" class="form-control"
+										id="confirmPassword" name="confirmPassword"
+										placeholder="Confirm new password" required minlength="6">
 								</div>
-								<div class="mb-3">
-									<label class="form-label d-block">Role</label>
-									<div class="role-options">
-										<label class="role-option" for="roleUser"> <input
-											type="radio" id="roleUser" name="role" value="USER" checked>
-											<span>User</span>
-										</label> <label class="role-option" for="roleAdmin"> <input
-											type="radio" id="roleAdmin" name="role" value="ADMIN">
-											<span>Admin</span>
-										</label>
-									</div>
-								</div>
-								<button class="btn btn-brand w-100" type="submit">Login</button>
+
+								<button class="btn btn-brand w-100 mt-2" type="submit">Update
+									Password</button>
 							</form>
-							<p class="signup-text mb-0">
-								Don't have an account? <a href="signup.jsp">Sign Up</a>
-							</p>
+
 						</div>
 					</div>
 				</div>
@@ -219,6 +172,21 @@ h1, h2, h3, h4, h5 {
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
 		crossorigin="anonymous"></script>
+
+	<!-- Standard Password HTML confirmation check purely UX purpose (optional) -->
+	<script>
+		const pwForm = document.querySelector('form');
+		if (pwForm) {
+			pwForm.addEventListener('submit', function(e) {
+				const pw1 = document.getElementById('newPassword').value;
+				const pw2 = document.getElementById('confirmPassword').value;
+				if (pw1 !== pw2) {
+					e.preventDefault();
+					alert("Passwords do not match!");
+				}
+			});
+		}
+	</script>
 
 </body>
 

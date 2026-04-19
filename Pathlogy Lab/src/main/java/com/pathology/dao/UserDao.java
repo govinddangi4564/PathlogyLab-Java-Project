@@ -153,4 +153,22 @@ public class UserDao {
 		return count;
 	}
 
+	public int storeOtp(String email, String otp) {
+		int i = 0;
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con
+						.prepareStatement("UPDATE users SET otp = ?, otp_time = CURRENT_TIMESTAMP WHERE email = ?")) {
+			pst.setString(1, otp);
+			pst.setString(2, email);
+
+			i = pst.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return i;
+	}
+
 }
