@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import com.pathology.model.User;
 
@@ -168,6 +169,58 @@ public class UserDao {
 			e.printStackTrace();
 		}
 
+		return i;
+	}
+
+	public User verifyOtp(String email) {
+		User u = null;
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con.prepareStatement("SELECT otp, otp_time FROM users where email = ?")) {
+			pst.setString(1, email);
+
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				String dbOtp = rs.getString("otp");
+				Timestamp dbOtpTime = rs.getTimestamp("otp_time");
+
+				u = new User(dbOtp, dbOtpTime);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return u;
+	}
+
+	public void clearOtp(String email) {
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con
+						.prepareStatement("UPDATE users SET otp = NULL, otp_time = NULL WHERE email = ?")) {
+
+			pst.setString(1, email);
+			pst.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public int updatePassword(String email, String password) {
+		int i = 0;
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con.prepareStatement("UPDATE users SET password = ? WHERE email = ?")) {
+			pst.setString(1, password);
+			pst.setString(2, email);
+
+			i = pst.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return i;
 	}
 

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page session="false"%>
 <!DOCTYPE html>
 <html>
 
@@ -149,16 +150,17 @@ h1, h2, h3, h4, h5 {
 <body>
 
 	<%
-	String msg = (String) request.getAttribute("msg");
-	%>
-
-	<%
+	HttpSession session = request.getSession(false);
+	String msg = (String) session.getAttribute("msg");
 	if (msg != null) {
 	%>
-	<div class="alert alert-danger text-center" role="alert">
+	<div id="alertMsg"
+		class="alert alert-success alert-dismissible fade show" role="alert">
 		<%=msg%>
+		<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
 	</div>
 	<%
+	session.removeAttribute("msg");
 	}
 	%>
 
@@ -214,6 +216,17 @@ h1, h2, h3, h4, h5 {
 			</div>
 		</div>
 	</div>
+
+	<script>
+setTimeout(function() {
+    let alert = document.getElementById("alertMsg");
+    if (alert) {
+        alert.classList.remove("show");
+        alert.classList.add("fade");
+        setTimeout(() => alert.remove(), 500);
+    }
+}, 3000); // 3 seconds
+</script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

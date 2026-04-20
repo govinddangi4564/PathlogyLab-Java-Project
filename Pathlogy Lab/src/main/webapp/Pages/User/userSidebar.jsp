@@ -14,7 +14,8 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 	rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/Css/sidebar.css">
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/Css/sidebar.css">
 
 </head>
 
@@ -40,18 +41,22 @@
 			</h3>
 		</div>
 
-		<span class="nav-label">Main Menu</span> <a href="${pageContext.request.contextPath}/Pages/User/user-dashboard.jsp" class="active">
-			<i class="fa-solid fa-user"></i> Dashboard
-		</a> <a href="${pageContext.request.contextPath}/userViewReports"> <i class="fa-solid fa-file-medical"></i> My Reports
+		<span class="nav-label">Main Menu</span> <a
+			href="${pageContext.request.contextPath}/Pages/User/user-dashboard.jsp"
+			class="active"> <i class="fa-solid fa-user"></i> Dashboard
+		</a> <a href="${pageContext.request.contextPath}/userViewReports"> <i
+			class="fa-solid fa-file-medical"></i> My Reports
 		</a> <a href="#"> <i class="fa-solid fa-calendar-check"></i>
 			Appointments
-		</a> <span class="nav-label">Settings</span> <a href="#"> <i
+		</a> <span class="nav-label">Settings</span> <a
+			href="${pageContext.request.contextPath}/Pages/forgetPassword.jsp"> <i
 			class="fa-solid fa-lock"></i> Change Password
 		</a>
 
 		<div class="bottom-nav">
-			<a href="${pageContext.request.contextPath}/logout" class="logout-link"> <i
-				class="fa-solid fa-right-from-bracket"></i> Logout
+			<a href="${pageContext.request.contextPath}/logout"
+				class="logout-link"> <i class="fa-solid fa-right-from-bracket"></i>
+				Logout
 			</a>
 		</div>
 	</div>

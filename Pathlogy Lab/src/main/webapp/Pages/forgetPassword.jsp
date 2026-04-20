@@ -125,6 +125,19 @@ h1, h2, h3, h4, h5 {
 </head>
 
 <body>
+	<%
+	String msg = (String) session.getAttribute("msg");
+	if (msg != null) {
+	%>
+	<div id="alertMsg"
+		class="alert alert-success alert-dismissible fade show" role="alert">
+		<%=msg%>
+		<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+	</div>
+	<%
+	session.removeAttribute("msg");
+	}
+	%>
 
 	<div class="auth-wrap">
 		<div class="container">
@@ -138,8 +151,8 @@ h1, h2, h3, h4, h5 {
 								<a class="back-link" href="login.jsp">← Back</a>
 							</div>
 
-							<!-- Step 1: Request OTP Form (MOCKED TO REDIRECT TO VERIFY) -->
-							<form method="post" action="${pageContext.request.contextPath}/sendOtp">
+							<form method="post"
+								action="${pageContext.request.contextPath}/sendOtp">
 								<p class="text-muted mb-4" style="font-size: 0.95rem;">Enter
 									your registered email. We will send you an OTP to verify your
 									identity.</p>
@@ -154,7 +167,7 @@ h1, h2, h3, h4, h5 {
 							</form>
 
 							<p class="signup-text mb-0 mt-4">
-								Remembered your password? <a href="login.jsp">Login Here</a>
+								Remembered your password? <a href="login.jsp">Login</a>
 							</p>
 						</div>
 					</div>

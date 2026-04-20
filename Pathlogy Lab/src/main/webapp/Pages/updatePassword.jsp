@@ -126,6 +126,20 @@ h1, h2, h3, h4, h5 {
 
 <body>
 
+	<%
+	String msg = (String) session.getAttribute("msg");
+	if (msg != null) {
+	%>
+	<div id="alertMsg"
+		class="alert alert-success alert-dismissible fade show" role="alert">
+		<%=msg%>
+		<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+	</div>
+	<%
+	session.removeAttribute("msg");
+	}
+	%>
+
 	<div class="auth-wrap">
 		<div class="container">
 			<div class="row justify-content-center">
@@ -137,11 +151,8 @@ h1, h2, h3, h4, h5 {
 								<h4 class="fw-bold mb-0">New Password</h4>
 							</div>
 
-							<div class="alert alert-success text-center mb-3" role="alert">
-								Mock: OTP verified successfully. Let's set a new password.</div>
-
-							<!-- Step 3: Update Password Form (MOCKED TO REDIRECT TO LOGIN) -->
-							<form method="post" action="login.jsp">
+							<form method="post"
+								action="${pageContext.request.contextPath}/updatePassword">
 								<p class="text-muted mb-4" style="font-size: 0.95rem;">Set a
 									new password for your account.</p>
 								<div class="mb-3">
@@ -173,7 +184,6 @@ h1, h2, h3, h4, h5 {
 		integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
 		crossorigin="anonymous"></script>
 
-	<!-- Standard Password HTML confirmation check purely UX purpose (optional) -->
 	<script>
 		const pwForm = document.querySelector('form');
 		if (pwForm) {
@@ -186,6 +196,15 @@ h1, h2, h3, h4, h5 {
 				}
 			});
 		}
+		
+		setTimeout(function() {
+		    let alert = document.getElementById("alertMsg");
+		    if (alert) {
+		        alert.classList.remove("show");
+		        alert.classList.add("fade");
+		        setTimeout(() => alert.remove(), 500);
+		    }
+		}, 3000); // 3 seconds
 	</script>
 
 </body>

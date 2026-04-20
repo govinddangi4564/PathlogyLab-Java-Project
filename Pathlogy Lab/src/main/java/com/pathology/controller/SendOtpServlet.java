@@ -39,6 +39,8 @@ public class SendOtpServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String otp = generateOtp();
 
+		request.getSession().setAttribute("email", email);
+
 		UserDao dao = new UserDao();
 		int i = dao.storeOtp(email, otp);
 
@@ -61,8 +63,12 @@ public class SendOtpServlet extends HttpServlet {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(from));
 			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-			msg.setSubject("Your OTP Code");
-			msg.setText("Your OTP is : " + otp);
+			msg.setSubject("OTP for Password Reset - Pathology Lab");
+			msg.setText("Dear User,\n\n"
+					+ "Please use the following One-Time Password (OTP) to proceed with your request.\n\n"
+					+ "Your OTP is: " + otp + "\n\n"
+					+ "Note: This OTP is valid for the next 10 minutes. Please do not share it with anyone.\n\n"
+					+ "Thank you,\nPathology Lab");
 
 			Transport.send(msg);
 
@@ -72,7 +78,7 @@ public class SendOtpServlet extends HttpServlet {
 				request.getSession().setAttribute("msg", "Something Went Wrong.");
 			}
 
-			response.sendRedirect("./Pages/updatePassword.jsp");
+			response.sendRedirect("./Pages/verifyOtp.jsp");
 
 		} catch (MessagingException e) {
 

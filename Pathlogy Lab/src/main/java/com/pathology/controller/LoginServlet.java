@@ -29,28 +29,30 @@ public class LoginServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
+		HttpSession session = request.getSession(false);
+
 		String emailOrMobile = request.getParameter("loginId");
 		String pass = request.getParameter("password");
 		String role = request.getParameter("role");
 
 		UserDao dao = new UserDao();
-		User user = dao.login(emailOrMobile,role);
+		User user = dao.login(emailOrMobile, role);
 
 		if (user != null && BCrypt.checkpw(pass, user.getPassword())) {
 
-			HttpSession session = request.getSession();
 			session.setAttribute("userObj", user);
 
 			if ("USER".equals(role)) {
+				session.setAttribute("msg", "Login Successful");
 				response.sendRedirect("Pages/User/user-dashboard.jsp");
 			} else {
+				session.setAttribute("msg", "Login Successful");
 				response.sendRedirect("Pages/admin-dashboard.jsp");
 			}
 
 		} else {
-			request.setAttribute("msg", "Invalid Credentials");
-			request.getRequestDispatcher("./Pages/login.jsp").forward(request, response);
+			session.setAttribute("msg", "Invalid Credentials");
+			response.sendRedirect("./Pages/login.jsp");
 		}
 	}
 
