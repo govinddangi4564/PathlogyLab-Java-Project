@@ -180,28 +180,37 @@ body {
 
 		<div class="panel">
 			<div class="row g-2 filter-row mb-3">
-				<div class="col-md-5">
-					<input type="text" id="searchInput" class="form-control"
-						placeholder="Search by patient ID, email, or mobile">
-				</div>
-				<div class="col-md-3">
-					<select class="form-select">
-						<option selected>All Types</option>
-						<option>Blood Test</option>
-						<option>X-Ray</option>
-						<option>MRI</option>
-					</select>
-				</div>
-				<div class="col-md-2">
-					<select class="form-select">
-						<option selected>All Status</option>
-						<option>Published</option>
-						<option>Pending</option>
-					</select>
-				</div>
-				<div class="col-md-2 d-grid">
-					<button class="btn btn-outline-secondary">Filter</button>
-				</div>
+				<form action="searchReport" method="get" class="d-flex w-100 gap-2">
+
+					<div class="col-md-4">
+						<input type="text" id="searchInput" class="form-control"
+							name="search"
+							placeholder="Search by patient ID, report name or status">
+					</div>
+
+					<div class="col-md-3">
+						<select class="form-select" name="type">
+							<option selected>All Types</option>
+							<option>Blood Test</option>
+							<option>X-Ray</option>
+							<option>MRI</option>
+						</select>
+					</div>
+
+					<div class="col-md-2">
+						<select class="form-select" name="status">
+							<option selected>All Status</option>
+							<option>Published</option>
+							<option>Pending</option>
+						</select>
+					</div>
+
+					<div class="col-md-2 d-grid">
+						<button type="submit" class="btn btn-outline-secondary">
+							Filter</button>
+					</div>
+
+				</form>
 			</div>
 
 

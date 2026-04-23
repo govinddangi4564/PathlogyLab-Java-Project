@@ -10,10 +10,12 @@ import java.util.List;
 
 import com.pathology.dao.PatientDao;
 import com.pathology.dao.ReportDao;
+import com.pathology.dao.UserDao;
 import com.pathology.model.Patient;
 import com.pathology.model.Report;
+import com.pathology.model.User;
 
-@WebServlet(urlPatterns = { "/viewPatients", "/viewAllReports", "/viewReport" })
+@WebServlet(urlPatterns = { "/viewPatients", "/viewAllReports", "/viewReport", "/viewStaff" })
 public class ViewReports extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -42,11 +44,18 @@ public class ViewReports extends HttpServlet {
 
 			String pId = request.getParameter("pId");
 			ReportDao dao = new ReportDao();
-
 			List<Report> list = dao.patientReport(pId);
 
 			request.setAttribute("reportList", list);
 			request.getRequestDispatcher("./Pages/viewAllReports.jsp").forward(request, response);
+
+		} else if (path.equals("/viewStaff")) {
+
+			UserDao dao = new UserDao();
+			List<User> list = dao.staffList();
+
+			request.setAttribute("staffList", list);
+			request.getRequestDispatcher("./Pages/viewStaff.jsp").forward(request, response);
 		}
 	}
 }

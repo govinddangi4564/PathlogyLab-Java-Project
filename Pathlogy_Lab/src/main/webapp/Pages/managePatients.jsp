@@ -55,7 +55,7 @@
 						<p class="text-muted">Add Patients name, email and phone</p>
 
 						<a href="addPatient.jsp" class="btn btn-success px-4"> <i
-							class="bi bi-eye"></i> Add Patients
+							class="bi bi-plus"></i> Add Patients
 						</a>
 
 					</div>

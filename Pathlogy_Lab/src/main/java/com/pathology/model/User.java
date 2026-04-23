@@ -1,5 +1,6 @@
 package com.pathology.model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ public class User {
 	private String mobile;
 	private String password;
 	private String role;
-
+	private Date date;
 	private String otp;
 	private Timestamp otpTime;
 
@@ -51,6 +52,16 @@ public class User {
 	public User(String password) {
 		super();
 		this.password = password;
+	}
+
+	public User(int id, String name, String email, String mobile, String role, Date date) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.mobile = mobile;
+		this.role = role;
+		this.date = date;
 	}
 
 }

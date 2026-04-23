@@ -1,6 +1,7 @@
 package com.pathology.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -285,6 +286,48 @@ public class UserDao {
 			e.printStackTrace();
 		}
 
+		return i;
+	}
+
+	public List<User> staffList() {
+		List<User> list = new LinkedList<User>();
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con.prepareStatement(
+						"SELECT id, name, email, mobile, role, created_at FROM users WHERE role = ?")) {
+			pst.setString(1, "STAFF");
+
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				String email = rs.getString("email");
+				String mobile = rs.getString("mobile");
+				String role = rs.getString("role");
+				Date dt = rs.getDate("created_at");
+
+				list.add(new User(id, name, email, mobile, role, dt));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public int deleteStaff(int id) {
+		int i = 0;
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con.prepareStatement("DELETE FROM users WHERE id = ?")) {
+			pst.setInt(1, id);
+
+			i = pst.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return i;
 	}
 

@@ -36,8 +36,8 @@
 
 		<!-- Heading -->
 		<div class="mb-4">
-			<h2 class="fw-bold">Manage Patients</h2>
-			<p class="text-muted">View Patients and Add patients</p>
+			<h2 class="fw-bold">Manage Staff</h2>
+			<p class="text-muted">View Staff and Add Staff</p>
 		</div>
 
 		<!-- REPORT CARDS -->
@@ -54,7 +54,7 @@
 						<p class="text-muted">Add Staff name, email and phone</p>
 
 						<a href="addStaff.jsp" class="btn btn-success px-4"> <i
-							class="bi bi-eye"></i> Add Staff
+							class="bi bi-plus"></i> Add Staff
 						</a>
 
 					</div>

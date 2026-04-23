@@ -178,6 +178,36 @@ public class ReportDao {
 		return count;
 	}
 
+	public List<Report> searchReport(String key) {
+		List<Report> list = new LinkedList<Report>();
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con.prepareStatement(
+						"SELECT * FROM reports WHERE report_name LIKE ? OR patient_id LIKE ? OR status LIKE ?")) {
+
+			pst.setString(1, "%" + key + "%");
+			pst.setString(2, "%" + key + "%");
+			pst.setString(3, "%" + key + "%");
+
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String patientId = rs.getString("patient_id");
+				String report = rs.getString("report_name");
+				String path = rs.getString("file_path");
+				Date dt = rs.getDate("upload_date");
+				String status = rs.getString("status");
+
+				list.add(new Report(id, patientId, report, path, dt, status));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 	// ------------------------- USER / PATIENT------------------------
 
 	public List<Report> reportList(String email) {
