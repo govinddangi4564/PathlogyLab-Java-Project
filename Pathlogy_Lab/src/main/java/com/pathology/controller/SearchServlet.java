@@ -11,26 +11,25 @@ import java.util.List;
 import com.pathology.dao.PatientDao;
 import com.pathology.model.Patient;
 
-@WebServlet("/viewPatients")
-public class ViewAllPatients extends HttpServlet {
+@WebServlet(urlPatterns = { "/searchPatient", "/searchReport" })
+public class SearchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	public ViewAllPatients() {
-		super();
-	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		PatientDao dao = new PatientDao();
-		List<Patient> list = dao.viewAllPatients();
+		String path = request.getServletPath();
 
-		request.setAttribute("reportList", list);
-		request.getRequestDispatcher("./Pages/viewAllPatients.jsp").forward(request, response);
+		if (path.equals("/searchPatient")) {
+			String key = request.getParameter("search");
+			PatientDao dao = new PatientDao();
+			List<Patient> list = dao.searchPatient(key);
 
-	}
+			request.setAttribute("patientList", list);
+			request.getRequestDispatcher("./Pages/viewAllPatients.jsp").forward(request, response);
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+		} else if (path.equals("/searchReport")) {
+
+		}
 	}
 
 }

@@ -132,4 +132,29 @@ public class PatientDao {
 		return count;
 	}
 
+	public List<Patient> searchPatient(String key) {
+		List<Patient> list = new LinkedList<Patient>();
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con.prepareStatement(
+						"SELECT * FROM patients where patient_uid LIKE ? OR patient_name LIKE ? OR patient_email LIKE ? OR patient_mobile LIKE ?")) {
+
+			pst.setString(1, "%" + key + "%");
+			pst.setString(2, "%" + key + "%");
+			pst.setString(3, "%" + key + "%");
+			pst.setString(4, "%" + key + "%");
+
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				list.add(new Patient(rs.getString("patient_uid"), rs.getString("patient_name"),
+						rs.getString("patient_email"), rs.getString("patient_mobile")));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 }

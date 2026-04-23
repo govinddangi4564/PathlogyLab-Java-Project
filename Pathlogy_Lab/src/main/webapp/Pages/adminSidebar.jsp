@@ -49,10 +49,10 @@
 			View Reports
 		</a> <span class="nav-label">Management</span> <a
 			href="<%=request.getContextPath()%>/Pages/managePatients.jsp"
-			data-admin-link="patients"> <i class="fa-solid fa-users"></i>
+			data-admin-link="patients"> <i class="fa-solid fa-users"></i>Manage 
 			Patients
-		</a> <a href="<%=request.getContextPath()%>/Pages/addStaff.jsp"
-			data-admin-link="staff"> <i class="fa-solid fa-users"></i> Add
+		</a> <a href="<%=request.getContextPath()%>/Pages/manageStaff.jsp"
+			data-admin-link="staff"> <i class="fa-solid fa-users"></i> Manage
 			Staff
 		</a>
 

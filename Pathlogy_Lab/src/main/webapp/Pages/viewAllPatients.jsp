@@ -228,7 +228,7 @@ body {
 	<%@ include file="Components/auth.jsp"%>
 
 	<%
-	List<Patient> list = (List<Patient>) request.getAttribute("reportList");
+	List<Patient> list = (List<Patient>) request.getAttribute("patientList");
 	%>
 
 	<%
@@ -278,9 +278,12 @@ body {
 					</div>
 				</div>
 				<div class="search-box">
-					<i class="fa-solid fa-search"></i> <input type="text"
-						class="form-control"
-						placeholder="Search by Patient ID or Patient Name...">
+					<form action="<%=request.getContextPath()%>/searchPatient"
+						method="get">
+						<i class="fa-solid fa-search"></i> <input type="text"
+							name="search" class="form-control"
+							placeholder="Search by Patient ID, Patient Name, Email, Mobile...">
+					</form>
 				</div>
 
 				<div class="dropdown">
@@ -334,7 +337,8 @@ body {
 							<td><%=p.getPatientEmail()%></td>
 							<td><%=p.getPatientMobile()%></td>
 
-							<td><a href="viewReport?pId=<%=p.getPatientId()%>"
+							<td><a
+								href="<%=request.getContextPath()%>/viewReport?pId=<%=p.getPatientId()%>"
 								class="btn btn-success btn-sm"> View Reports </a> <a
 								href="deletePatient?pId=<%=p.getPatientId()%>"
 								class="btn btn-outline-danger btn-sm"
