@@ -145,14 +145,7 @@ body {
 
 	<div class="main-content">
 
-		<%
-		String msg = (String) request.getAttribute("msg");
-		if (msg != null) {
-		%>
-		<div class="alert alert-info"><%=msg%></div>
-		<%
-		}
-		%>
+		<%@ include file="Components/message.jsp"%>
 
 		<h2 class="page-title">All Reports</h2>
 		<p class="page-subtitle">Review uploaded records, check statuses,
@@ -242,12 +235,28 @@ body {
 						<td><span class="badge-soft badge-published"> <%=r.getStatus()%>
 						</span></td>
 
-						<td><a href="downloadReport?file=/<%=r.getReportPath()%>"
-							class="btn btn-success btn-sm"> Download </a> <a
-							href="deleteReport?id=<%=r.getId()%>"
-							class="btn btn-outline-danger btn-sm"
-							onclick="return confirm('Are you sure you want to delete this report?');">
-								Delete </a></td>
+						<td>
+							<div class="d-flex gap-2">
+
+								<!-- Download Button -->
+								<a href="downloadReport?file=<%=r.getReportPath()%>"
+									class="btn btn-success btn-sm"> Download </a>
+
+								<!-- Delete Button -->
+								<a href="deleteReport?id=<%=r.getId()%>"
+									class="btn btn-outline-danger btn-sm"
+									onclick="return confirm('Are you sure you want to delete this report?');">
+									Delete </a>
+
+								<!-- Send Email Button -->
+								<form action="sendReport" method="post" class="m-0">
+									<input type="hidden" name="id" value="<%=r.getId()%>">
+									<button type="submit" class="btn btn-primary btn-sm">
+										Send</button>
+								</form>
+
+							</div>
+						</td>
 					</tr>
 				</tbody>
 

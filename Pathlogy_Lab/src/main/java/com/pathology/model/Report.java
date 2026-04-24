@@ -20,6 +20,8 @@ public class Report {
 
 	private String patientName;
 
+	private String patientEmail;
+
 	public Report(int userId, String patientId, String reportName, String reportPath, String status) {
 		super();
 		this.userId = userId;
@@ -60,7 +62,11 @@ public class Report {
 		this.status = status;
 		this.patientName = patientName;
 	}
-	
-	
+
+	public Report(String reportPath, String patientEmail) {
+		super();
+		this.reportPath = reportPath;
+		this.patientEmail = patientEmail;
+	}
 
 }

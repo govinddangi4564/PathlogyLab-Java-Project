@@ -238,4 +238,23 @@ public class ReportDao {
 		return list;
 	}
 
+	public Report getReport(int id) {
+		Report r = null;
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con.prepareStatement(
+						"SELECT p.patient_email, r.file_path FROM patients p JOIN reports r ON p.patient_uid = r.patient_id WHERE r.id = ?")) {
+			pst.setInt(1, id);
+
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				r = new Report(rs.getString("file_path"), rs.getString("patient_email"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return r;
+	}
 }
