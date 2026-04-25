@@ -22,27 +22,20 @@ public class SignUpServlet extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		String name = request.getParameter("fullName");
-		String email = request.getParameter("email");
-		String mob = request.getParameter("mobile");
-		String pass = request.getParameter("password");
-
 		HttpSession session = request.getSession();
-		UserDao dao = new UserDao();
 
-		// Step 1: Check email BEFORE insert
-		if (dao.isEmailExists(email)) {
-			session.setAttribute("errorMsg", "Email already registered");
-			response.sendRedirect(request.getContextPath() + "/Pages/signup.jsp");
-			return;
-		}
+		String name = (String) session.getAttribute("name");
+		String email = (String) session.getAttribute("email");
+		String mob = (String) session.getAttribute("mobile");
+		String pass = (String) session.getAttribute("pass");
+
+		UserDao dao = new UserDao();
 
 		// Hash password
 		String hashPass = BCrypt.hashpw(pass, BCrypt.gensalt());
@@ -54,6 +47,9 @@ public class SignUpServlet extends HttpServlet {
 		int i = dao.signup(us);
 
 		if (i > 0) {
+			session.removeAttribute("mobile");
+			session.removeAttribute("pass");
+
 			session.setAttribute("successMsg", "Registration Successful. Please login.");
 			response.sendRedirect(request.getContextPath() + "/Pages/login.jsp");
 		} else {

@@ -182,11 +182,11 @@ public class ReportDao {
 		return count;
 	}
 
-	public List<Report> filterReport(String search, String type, String status) {
+	public List<Report> filterReport(String search, String type, String status, String sort) {
 
 		List<Report> list = new ArrayList<Report>();
 
-		String query = "SELECT * FROM reports WHERE 1=1";
+		String query = "SELECT r.*, p.patient_name FROM reports r JOIN patients p ON r.patient_id = p.patient_uid WHERE 1=1";
 
 		if (search != null && !search.isEmpty()) {
 			query += " AND (report_name LIKE ? OR patient_id LIKE ? OR status LIKE ?)";
@@ -198,6 +198,23 @@ public class ReportDao {
 
 		if (status != null && !status.isEmpty()) {
 			query += " AND status = ?";
+		}
+
+		if (sort != null && !sort.isEmpty()) {
+			switch (sort) {
+			case "date_desc":
+				query += " ORDER BY upload_date DESC";
+				break;
+			case "date_asc":
+				query += " ORDER BY upload_date ASC";
+				break;
+			case "name_asc":
+				query += " ORDER BY report_name ASC";
+				break;
+			case "name_desc":
+				query += " ORDER BY report_name DESC";
+				break;
+			}
 		}
 
 		try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
@@ -221,8 +238,16 @@ public class ReportDao {
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
-				list.add(new Report(rs.getInt("id"), rs.getString("patient_id"), rs.getString("report_name"),
-						rs.getString("file_path"), rs.getDate("upload_date"), rs.getString("status")));
+				int id = rs.getInt("id");
+				String patientId = rs.getString("patient_id");
+				String patientName = rs.getString("patient_name");
+				String report = rs.getString("report_name");
+				String path = rs.getString("file_path");
+				Date dt = rs.getDate("upload_date");
+				String sts = rs.getString("status");
+				boolean emailSent = rs.getBoolean("email_sent");
+
+				list.add(new Report(id, patientId, report, path, dt, sts, patientName, emailSent));
 			}
 
 		} catch (SQLException e) {

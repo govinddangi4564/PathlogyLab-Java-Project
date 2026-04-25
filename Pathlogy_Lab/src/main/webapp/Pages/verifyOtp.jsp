@@ -121,10 +121,15 @@ h1, h2, h3, h4, h5 {
 	}
 }
 </style>
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Css/app-theme.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/Css/app-theme.css">
 </head>
 
 <body>
+	<%
+	String work = (String) session.getAttribute("work");
+	%>
+
 	<div class="auth-wrap">
 
 		<div class="container">
@@ -136,11 +141,12 @@ h1, h2, h3, h4, h5 {
 							<div
 								class="d-flex justify-content-between align-items-center mb-3">
 								<h4 class="fw-bold mb-0">Enter OTP</h4>
-								<a class="back-link" href="forgetPassword.jsp">â† Back</a>
+								<a
+									href="<%="signup".equals(work) ? "signup.jsp" : "forgetPassword.jsp"%>"
+									class="back-link"> ← Back </a>
 							</div>
 
 							<%@ include file="Components/message.jsp"%>
-
 							<form method="post"
 								action="<%=request.getContextPath()%>/verifyOtp">
 								<p class="text-muted mb-4" style="font-size: 0.95rem;">Please

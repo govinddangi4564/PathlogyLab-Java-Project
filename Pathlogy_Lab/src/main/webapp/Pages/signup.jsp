@@ -127,13 +127,13 @@ h1, h2, h3, h4, h5 {
 								class="d-flex justify-content-between align-items-center mb-3">
 								<h4 class="fw-bold mb-0">Create Account</h4>
 								<a class="back-link"
-									href="<%=request.getContextPath()%>/index.jsp"><i
+									href="<%=request.getContextPath()%>/Pages/login.jsp"><i
 									class="fa-solid fa-arrow-left"></i> Back</a>
 							</div>
 
 							<%@ include file="Components/message.jsp"%>
 
-							<form method="post" action="<%=request.getContextPath()%>/signup">
+							<form method="post" action="<%=request.getContextPath()%>/sendOtp">
 								<div class="mb-3">
 									<label class="form-label" for="fullName">Full Name</label> <input
 										type="text" class="form-control" id="fullName" name="fullName"
@@ -155,6 +155,7 @@ h1, h2, h3, h4, h5 {
 										name="password" placeholder="Create password" required>
 								</div>
 								<input type="hidden" name="role" value="USER">
+								<input type="hidden" name="work" value="signup">
 
 								<button class="btn btn-brand w-100" type="submit">Sign
 									Up</button>

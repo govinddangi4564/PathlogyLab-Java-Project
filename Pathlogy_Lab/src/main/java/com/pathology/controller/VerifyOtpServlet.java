@@ -21,10 +21,6 @@ public class VerifyOtpServlet extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -37,43 +33,69 @@ public class VerifyOtpServlet extends HttpServlet {
 
 		String email = (String) session.getAttribute("email");
 		String userOtp = request.getParameter("otp");
+		String work = (String) session.getAttribute("work");
 
-		if (email == null || userOtp == null) {
-			session.setAttribute("errorMsg", "Session expired. Try again.");
-			response.sendRedirect(request.getContextPath() + "/Pages/forgetPassword.jsp");
-			return;
-		}
-		UserDao dao = new UserDao();
-		User dbUser = dao.verifyOtp(email); // db otp + time
+		if ("signup".equals(work)) {
+			String sentOtp = (String) session.getAttribute("otp");
+			Long otpTime = (Long) session.getAttribute("otpTime");
 
-		if (dbUser != null && dbUser.getOtp() != null && dbUser.getOtpTime() != null) {
-			String dbOtp = dbUser.getOtp();
-			Timestamp otpTime = dbUser.getOtpTime();
-
-			long diff = System.currentTimeMillis() - otpTime.getTime();
+			long diff = System.currentTimeMillis() - otpTime;
 			long minutes = diff / (1000 * 60);
 
 			if (minutes > 10) {
 				session.setAttribute("errorMsg", "OTP expired");
 				response.sendRedirect("./Pages/verifyOtp.jsp");
+				return;
+			}
 
-			} else if (dbOtp.equals(userOtp)) {
-
-				// clear OTP after verify
-				dao.clearOtp(email);
-
-				session.setAttribute("otpVerified", true);
-
+			if (sentOtp != null && sentOtp.equals(userOtp)) {
+				session.removeAttribute("otp");
 				session.setAttribute("successMsg", "OTP Verified");
-				response.sendRedirect(request.getContextPath() + "/Pages/updatePassword.jsp");
+				response.sendRedirect(request.getContextPath() + "/signup");
 			} else {
 				session.setAttribute("errorMsg", "Invalid OTP");
 				response.sendRedirect(request.getContextPath() + "/Pages/verifyOtp.jsp");
 			}
 
 		} else {
-			session.setAttribute("errorMsg", "Invalid request or OTP not found");
-			response.sendRedirect(request.getContextPath() + "/Pages/verifyOtp.jsp");
+
+			if (email == null || userOtp == null) {
+				session.setAttribute("errorMsg", "Session expired. Try again.");
+				response.sendRedirect(request.getContextPath() + "/Pages/forgetPassword.jsp");
+				return;
+			}
+			UserDao dao = new UserDao();
+			User dbUser = dao.verifyOtp(email); // db otp + time
+
+			if (dbUser != null && dbUser.getOtp() != null && dbUser.getOtpTime() != null) {
+				String dbOtp = dbUser.getOtp();
+				Timestamp otpTime = dbUser.getOtpTime();
+
+				long diff = System.currentTimeMillis() - otpTime.getTime();
+				long minutes = diff / (1000 * 60);
+
+				if (minutes > 10) {
+					session.setAttribute("errorMsg", "OTP expired");
+					response.sendRedirect("./Pages/verifyOtp.jsp");
+
+				} else if (dbOtp.equals(userOtp)) {
+
+					// clear OTP after verify
+					dao.clearOtp(email);
+
+					session.setAttribute("otpVerified", true);
+
+					session.setAttribute("successMsg", "OTP Verified");
+					response.sendRedirect(request.getContextPath() + "/Pages/updatePassword.jsp");
+				} else {
+					session.setAttribute("errorMsg", "Invalid OTP");
+					response.sendRedirect(request.getContextPath() + "/Pages/verifyOtp.jsp");
+				}
+
+			} else {
+				session.setAttribute("errorMsg", "Invalid request or OTP not found");
+				response.sendRedirect(request.getContextPath() + "/Pages/verifyOtp.jsp");
+			}
 		}
 	}
 }

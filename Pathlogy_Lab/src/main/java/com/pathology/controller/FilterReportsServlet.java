@@ -33,9 +33,10 @@ public class FilterReportsServlet extends HttpServlet {
 			String search = request.getParameter("search");
 			String type = request.getParameter("type");
 			String status = request.getParameter("status");
+			String sort = request.getParameter("sort");
 
 			ReportDao dao = new ReportDao();
-			List<Report> list = dao.filterReport(search, type, status);
+			List<Report> list = dao.filterReport(search, type, status, sort);
 
 			request.setAttribute("reportList", list);
 			request.getRequestDispatcher("./Pages/viewAllReports.jsp").forward(request, response);

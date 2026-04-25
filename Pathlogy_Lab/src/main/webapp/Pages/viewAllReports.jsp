@@ -206,7 +206,7 @@ body {
 		<div class="panel">
 			<div class="row g-2 filter-row mb-3">
 				<form action="<%=request.getContextPath()%>/filterReport"
-					method="get" class="d-flex w-100 gap-2">
+					method="get" class="d-flex w-100 gap-3">
 
 					<!-- Search Input -->
 					<div class="col-md-3">
@@ -243,12 +243,12 @@ body {
 
 					<!-- Sort -->
 					<div class="col-md-2">
-						<select class="form-select" name="status">
+						<select class="form-select" name="sort">
 							<option value="">Sort By</option>
-							<option value="Pending">Newest First</option>
-							<option value="Completed">Oldest First</option>
-							<option value="Delivered">Name (A → Z)</option>
-							<option value="Delivered">Name (Z → A)</option>
+							<option value="date_desc">Newest First</option>
+							<option value="date_asc">Oldest First</option>
+							<option value="name_asc">Name (A → Z)</option>
+							<option value="name_desc">Name (Z → A)</option>
 						</select>
 					</div>
 

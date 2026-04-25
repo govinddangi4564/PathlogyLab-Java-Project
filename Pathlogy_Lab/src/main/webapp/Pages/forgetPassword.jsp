@@ -152,6 +152,7 @@ h1, h2, h3, h4, h5 {
 										type="email" class="form-control" id="email" name="email"
 										placeholder="Enter your email" required>
 								</div>
+								<input type="hidden" name="work" value="reset">
 
 								<button class="btn btn-brand w-100 mt-2" type="submit">Send
 									OTP</button>
