@@ -19,10 +19,15 @@
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/Css/sidebar.css">
 
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Css/app-theme.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/Css/app-theme.css">
 </head>
 
 <body>
+
+	<%
+	User us = (User) session.getAttribute("userObj");
+	%>
 
 	<div class="sidebar role-staff" id="staffSidebar">
 		<div class="sidebar-header">
@@ -43,7 +48,7 @@
 			data-staff-link="reports"> <i class="fa-solid fa-file-medical"></i>
 			View Reports
 		</a> <span class="nav-label">Management</span> <a
-			href="<%=request.getContextPath()%>/viewPatients"
+			href="<%=request.getContextPath()%>/Pages/managePatients.jsp"
 			data-staff-link="patients"> <i class="fa-solid fa-users"></i>
 			Patients
 		</a> <a href="<%=request.getContextPath()%>/Pages/changePassword.jsp"
@@ -80,8 +85,8 @@
 
 			<div class="profile-section">
 				<div class="profile-info">
-					<div class="profile-name">Name</div>
-					<div class="profile-role">Name</div>
+					<div class="profile-name"><%=us.getName()%></div>
+					<div class="profile-role"><%=us.getRole()%></div>
 				</div>
 				<div class="profile-img role-staff">
 					<i class="fa-solid fa-user-shield"></i>

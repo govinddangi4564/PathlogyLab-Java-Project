@@ -332,11 +332,14 @@ body {
 
 							<td><a
 								href="<%=request.getContextPath()%>/viewReport?pId=<%=p.getPatientId()%>"
-								class="btn btn-success btn-sm"> View Reports </a> <a
-								href="deletePatient?pId=<%=p.getPatientId()%>"
+								class="btn btn-success btn-sm"> View Reports </a> <%
+ if ("ADMIN".equalsIgnoreCase(role)) {
+ %> <a href="deletePatient?pId=<%=p.getPatientId()%>"
 								class="btn btn-outline-danger btn-sm"
 								onclick="return confirm('Are you sure you want to delete this patient?');">
-									Delete Patient </a></td>
+									Delete Patient </a> <%
+ }
+ %></td>
 						</tr>
 					</tbody>
 

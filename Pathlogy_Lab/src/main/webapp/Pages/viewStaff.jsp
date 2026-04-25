@@ -111,7 +111,15 @@ body {
 <body data-admin-page="reports">
 
 	<%@ include file="Components/auth.jsp"%>
-	<%@ include file="adminSidebar.jsp"%>
+
+	<%
+	String role = (String) mySession.getAttribute("role");
+	if ("STAFF".equals(role)) {
+		response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+		return;
+	} else if ("ADMIN".equals(role)) {
+	%>
+	<jsp:include page="adminSidebar.jsp" />
 
 	<%
 	List<User> list = (List<User>) request.getAttribute("staffList");
@@ -197,6 +205,10 @@ setTimeout(function() {
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="../Js/admin-dashboard.js"></script>
+
+	<%
+	}
+	%>
 
 </body>
 

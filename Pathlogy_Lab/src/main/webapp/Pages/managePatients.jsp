@@ -31,7 +31,19 @@
 
 <body data-admin-page="patients">
 	<%@ include file="Components/auth.jsp"%>
-	<%@ include file="adminSidebar.jsp"%>
+
+	<%
+	String role = (String) mySession.getAttribute("role");
+	if ("STAFF".equals(role)) {
+	%>
+	<jsp:include page="Staff/staffSidebar.jsp" />
+	<%
+	} else if ("ADMIN".equals(role)) {
+	%>
+	<jsp:include page="adminSidebar.jsp" />
+	<%
+	}
+	%>
 
 	<div class="main-content">
 

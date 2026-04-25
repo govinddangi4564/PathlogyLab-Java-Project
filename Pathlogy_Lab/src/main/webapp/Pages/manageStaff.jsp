@@ -30,7 +30,15 @@
 
 <body data-admin-page="patients">
 	<%@ include file="Components/auth.jsp"%>
-	<%@ include file="adminSidebar.jsp"%>
+
+	<%
+	String role = (String) mySession.getAttribute("role");
+	if ("STAFF".equals(role)) {
+		response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+		return;
+	} else if ("ADMIN".equals(role)) {
+	%>
+	<jsp:include page="adminSidebar.jsp" />
 
 	<div class="main-content">
 
@@ -88,6 +96,10 @@
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
 		
 	</script>
+
+	<%
+	}
+	%>
 
 </body>
 

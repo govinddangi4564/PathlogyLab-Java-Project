@@ -308,15 +308,11 @@ to {
 	<%
 	String role = (String) mySession.getAttribute("role");
 	if ("STAFF".equals(role)) {
-	%>
-	<jsp:include page="Staff/staffSidebar.jsp" />
-	<%
+		response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+		return;
 	} else if ("ADMIN".equals(role)) {
 	%>
 	<jsp:include page="adminSidebar.jsp" />
-	<%
-	}
-	%>
 
 	<%
 	PatientDao pdao = new PatientDao();
@@ -430,6 +426,11 @@ to {
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+	<%
+	}
+	%>
+
 
 </body>
 

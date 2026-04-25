@@ -460,12 +460,17 @@ body {
 									</a>
 
 									<!-- Delete -->
+									<%
+									if ("ADMIN".equalsIgnoreCase(role)) {
+									%>
 									<a href="deleteReport?id=<%=r.getId()%>"
 										class="btn btn-outline-danger btn-sm"
 										onclick="return confirm('Are you sure you want to delete this report?');">
 										<i class="fa-solid fa-trash"></i><span>Delete</span>
 									</a>
-
+									<%
+									}
+									%>
 									<!-- Send / Resend -->
 									<form action="sendReport" method="post" class="m-0">
 										<input type="hidden" name="id" value="<%=r.getId()%>">
@@ -478,7 +483,7 @@ body {
 									<!-- Mark as Delivered -->
 									<%
 									String sts = r.getStatus();
-									if ("Completed".equalsIgnoreCase(sts)) {
+									if ("ADMIN".equalsIgnoreCase(role) && "Completed".equalsIgnoreCase(sts)) {
 									%>
 									<form action="updateReportStatus" method="post" class="m-0">
 										<input type="hidden" name="id" value="<%=r.getId()%>">

@@ -42,7 +42,8 @@ body {
 	animation: fadeIn 0.8s ease-out;
 }
 
-@keyframes fadeIn {from { opacity:0;
+@
+keyframes fadeIn {from { opacity:0;
 	transform: translateY(20px);
 }
 
@@ -189,8 +190,16 @@ to {
 <body data-admin-page="staff">
 
 	<%@ include file="Components/auth.jsp"%>
-	<%@ include file="adminSidebar.jsp"%>
 	<%@ include file="Components/loader.jsp"%>
+
+	<%
+	String role = (String) mySession.getAttribute("role");
+	if ("STAFF".equals(role)) {
+		response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+		return;
+	} else if ("ADMIN".equals(role)) {
+	%>
+	<jsp:include page="adminSidebar.jsp" />
 
 	<div class="main-content">
 
@@ -261,6 +270,10 @@ to {
 					showLoader();
 				});
 	</script>
+
+	<%
+	}
+	%>
 
 </body>
 

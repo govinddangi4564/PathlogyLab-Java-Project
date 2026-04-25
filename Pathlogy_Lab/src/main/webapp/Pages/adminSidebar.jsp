@@ -29,6 +29,15 @@
 	User us = (User) session.getAttribute("userObj");
 	%>
 
+	<%
+	String role = (String) session.getAttribute("role");
+	if ("STAFF".equals(role)) {
+		response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+		return;
+	} else if ("ADMIN".equals(role)) {
+	%>
+	<jsp:include page="adminSidebar.jsp" />
+
 	<div class="sidebar role-admin" id="adminSidebar">
 		<div class="sidebar-header">
 			<h3>
@@ -49,7 +58,7 @@
 			View Reports
 		</a> <span class="nav-label">Management</span> <a
 			href="<%=request.getContextPath()%>/Pages/managePatients.jsp"
-			data-admin-link="patients"> <i class="fa-solid fa-users"></i>Manage 
+			data-admin-link="patients"> <i class="fa-solid fa-users"></i>Manage
 			Patients
 		</a> <a href="<%=request.getContextPath()%>/Pages/manageStaff.jsp"
 			data-admin-link="staff"> <i class="fa-solid fa-users"></i> Manage
@@ -120,6 +129,10 @@
 						});
 					})();
 				</script>
+
+	<%
+	}
+	%>
 </body>
 
 </html>
