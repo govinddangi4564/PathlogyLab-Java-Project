@@ -209,14 +209,14 @@ body {
 					method="get" class="d-flex w-100 gap-2">
 
 					<!-- Search Input -->
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<input type="text" id="searchInput" class="form-control"
 							name="search"
 							placeholder="Search by patient ID, report name or status">
 					</div>
 
 					<!-- Report Type -->
-					<div class="col-md-3">
+					<div class="col-md-2">
 						<select class="form-select" name="type">
 							<option value="">All Types</option>
 							<option value="Blood Test">Blood Test</option>
@@ -238,6 +238,17 @@ body {
 							<option value="Pending">Pending</option>
 							<option value="Completed">Complete</option>
 							<option value="Delivered">Delivered</option>
+						</select>
+					</div>
+
+					<!-- Sort -->
+					<div class="col-md-2">
+						<select class="form-select" name="status">
+							<option value="">Sort By</option>
+							<option value="Pending">Newest First</option>
+							<option value="Completed">Oldest First</option>
+							<option value="Delivered">Name (A → Z)</option>
+							<option value="Delivered">Name (Z → A)</option>
 						</select>
 					</div>
 
@@ -294,35 +305,34 @@ body {
 						</td>
 
 						<td>
-							<div class="d-flex gap-2">
+							<div class="d-flex gap-2 align-items-center">
 
-								<!-- Download Button -->
+								<!-- Download -->
 								<a href="downloadReport?file=<%=r.getReportPath()%>"
-									class="btn btn-success btn-sm"> Download </a>
+									class="btn btn-outline-success btn-sm"> Download </a>
 
-								<!-- Delete Button -->
+								<!-- Delete -->
 								<a href="deleteReport?id=<%=r.getId()%>"
 									class="btn btn-outline-danger btn-sm"
 									onclick="return confirm('Are you sure you want to delete this report?');">
 									Delete </a>
 
-								<!-- Send / Resend Button -->
-								<form action="sendReport" method="post" class="m-0 d-inline">
+								<!-- Send / Resend -->
+								<form action="sendReport" method="post" class="m-0">
 									<input type="hidden" name="id" value="<%=r.getId()%>">
-
-									<button type="submit" class="btn btn-primary btn-sm">
+									<button type="submit" class="btn btn-outline-primary btn-sm">
 										<%=r.isEmailSent() ? "Resend" : "Send"%>
 									</button>
 								</form>
-								<!-- Show Deliver Button ONLY if email is sent and not delivered -->
+
+								<!-- Mark as Delivered -->
 								<%
 								String sts = r.getStatus();
-								if ("Completed".equalsIgnoreCase(status)) {
+								if ("Completed".equalsIgnoreCase(sts)) {
 								%>
-								<form action="updateReportStatus" method="post"
-									class="m-0 d-inline">
+								<form action="updateReportStatus" method="post" class="m-0">
 									<input type="hidden" name="id" value="<%=r.getId()%>">
-									<button type="submit" class="btn btn-success btn-sm">
+									<button type="submit" class="btn btn-outline-success btn-sm">
 										Mark as Delivered</button>
 								</form>
 								<%
@@ -344,15 +354,15 @@ body {
 	</div>
 
 	<script>
-														setTimeout(function () {
-															let alert = document.getElementById("alertMsg");
-															if (alert) {
-																alert.classList.remove("show");
-																alert.classList.add("fade");
-																setTimeout(() => alert.remove(), 500);
-															}
-														}, 3000); // 3 seconds
-													</script>
+		setTimeout(function () {
+		let alert = document.getElementById("alertMsg");
+			if (alert) {
+				alert.classList.remove("show");
+				alert.classList.add("fade");
+				setTimeout(() => alert.remove(), 500);
+			}
+		}, 3000); // 3 seconds
+	</script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

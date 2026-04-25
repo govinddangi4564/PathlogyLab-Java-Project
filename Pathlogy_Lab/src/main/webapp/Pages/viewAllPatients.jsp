@@ -295,11 +295,13 @@ body {
 						<li><a class="dropdown-item"
 							href="sortPatients?sort=id&order=desc">Oldest First</a></li>
 						<li><a class="dropdown-item"
-							href="sortPatients?sort=patient_name&order=asc">Name (A â†’
-								Z)</a></li>
+							href="sortPatients?sort=patient_name&order=asc">Name (A <i
+								class="fa-solid fa-arrow-right"></i> Z)
+						</a></li>
 						<li><a class="dropdown-item"
-							href="sortPatients?sort=patient_name&order=desc">Name (Z â†’
-								A)</a></li>
+							href="sortPatients?sort=patient_name&order=desc">Name (Z <i
+								class="fa-solid fa-arrow-right"></i> A)
+						</a></li>
 					</ul>
 				</div>
 				<div>
