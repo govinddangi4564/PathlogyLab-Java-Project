@@ -16,26 +16,14 @@
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/Css/sidebar.css">
 
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Css/app-theme.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/Css/app-theme.css">
 </head>
 
 <body>
+	<%@ include file="../Components/auth.jsp"%>
 
 	<%
-	HttpSession newSession = request.getSession(false);
-	if (newSession == null) {
-		response.sendRedirect(request.getContextPath() + "/login");
-		return;
-	}
-	User u = (User) newSession.getAttribute("userObj");
-	if (u == null) {
-		response.sendRedirect(request.getContextPath() + "/login");
-		return;
-	}
-	if (!"USER".equals(u.getRole())) {
-		response.sendRedirect(request.getContextPath() + "/login");
-		return;
-	}
 	String name = u.getName();
 	String role = u.getRole();
 	String email = u.getEmail();

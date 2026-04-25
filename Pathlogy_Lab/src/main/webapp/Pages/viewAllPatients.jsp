@@ -238,6 +238,11 @@ body {
 
 	<%
 	String role = (String) mySession.getAttribute("role");
+
+	if ("ADMIN".equalsIgnoreCase(role) || "STAFF".equalsIgnoreCase(role)) {
+	%>
+
+	<%
 	if ("STAFF".equals(role)) {
 	%>
 	<jsp:include page="Staff/staffSidebar.jsp" />
@@ -248,7 +253,6 @@ body {
 	<%
 	}
 	%>
-
 
 	<div class="main-content">
 
@@ -386,6 +390,13 @@ body {
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+	<%
+	} else {
+	response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+	return;
+	}
+	%>
 </body>
 
 </html>

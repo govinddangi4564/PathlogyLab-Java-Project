@@ -26,7 +26,6 @@
 </head>
 
 <body data-user-page="dashboard">
-
 	<%@ include file="userSidebar.jsp"%>
 
 	<!-- Main Content -->

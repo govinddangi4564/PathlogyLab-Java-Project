@@ -212,14 +212,29 @@ to {
 <body data-staff-page="dashboard">
 
 	<%@ include file="../Components/auth.jsp"%>
+
+	<%
+	String role = (String) mySession.getAttribute("role");
+
+	if ("STAFF".equals(role)) {
+	%>
 	<jsp:include page="staffSidebar.jsp" />
+
+	<%
+	PatientDao pDao = new PatientDao();
+	ReportDao rDao = new ReportDao();
+
+	int totalPatient = pDao.totalPatients();
+	int totalReport = rDao.totalReports();
+	int pendingReport = rDao.totalPendingReports();
+	%>
 
 	<div class="main-content">
 
 		<%@ include file="../Components/message.jsp"%>
 
 		<div class="page-head">
-			<h2>Name</h2>
+			<h2><%=u.getName()%></h2>
 			<p>Track report flow, monitor pending work, and manage patient
 				records quickly from one place.</p>
 		</div>
@@ -230,7 +245,7 @@ to {
 					<i class="fa-solid fa-users"></i>
 				</div>
 				<p class="stat-label">Registered Patients</p>
-				<p class="stat-value">15</p>
+				<p class="stat-value"><%=totalPatient%></p>
 				<p class="stat-meta">Updated from central patient records</p>
 			</div>
 
@@ -239,7 +254,7 @@ to {
 					<i class="fa-solid fa-file-lines"></i>
 				</div>
 				<p class="stat-label">Reports Uploaded</p>
-				<p class="stat-value">12</p>
+				<p class="stat-value"><%=totalReport%></p>
 				<p class="stat-meta">Complete historical report volume</p>
 			</div>
 
@@ -248,7 +263,7 @@ to {
 					<i class="fa-solid fa-hourglass-half"></i>
 				</div>
 				<p class="stat-label">Pending Reports</p>
-				<p class="stat-value">5</p>
+				<p class="stat-value"><%=pendingReport%></p>
 				<p class="stat-meta">Awaiting review and final publishing</p>
 			</div>
 
@@ -257,7 +272,7 @@ to {
 					<i class="fa-solid fa-triangle-exclamation"></i>
 				</div>
 				<p class="stat-label">Priority Queue</p>
-				<p class="stat-value">2</p>
+				<p class="stat-value">0</p>
 				<p class="stat-meta">Auto-derived from pending report count</p>
 			</div>
 		</div>
@@ -299,6 +314,13 @@ to {
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+	<%
+	} else {
+	response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+	return;
+	}
+	%>
 
 </body>
 

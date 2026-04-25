@@ -231,16 +231,10 @@ to {
 
 	<%
 	String role = (String) mySession.getAttribute("role");
-	if ("STAFF".equals(role)) {
-	%>
-	<jsp:include page="Staff/staffSidebar.jsp" />
-	<%
-	} else if ("ADMIN".equals(role)) {
+
+	if ("ADMIN".equals(role)) {
 	%>
 	<jsp:include page="adminSidebar.jsp" />
-	<%
-	}
-	%>
 
 	<div class="main-content">
 
@@ -324,6 +318,13 @@ to {
 			}
 		}
 	</script>
+
+	<%
+	} else {
+	response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+	return;
+	}
+	%>
 
 </body>
 

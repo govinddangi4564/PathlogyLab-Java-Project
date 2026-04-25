@@ -114,10 +114,8 @@ body {
 
 	<%
 	String role = (String) mySession.getAttribute("role");
-	if ("STAFF".equals(role)) {
-		response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
-		return;
-	} else if ("ADMIN".equals(role)) {
+
+	if ("ADMIN".equals(role)) {
 	%>
 	<jsp:include page="adminSidebar.jsp" />
 
@@ -207,6 +205,9 @@ setTimeout(function() {
 	<script src="../Js/admin-dashboard.js"></script>
 
 	<%
+	} else {
+	response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+	return;
 	}
 	%>
 

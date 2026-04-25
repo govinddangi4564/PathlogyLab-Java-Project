@@ -229,6 +229,11 @@ to {
 
 	<%
 	String role = (String) mySession.getAttribute("role");
+
+	if ("ADMIN".equalsIgnoreCase(role) || "STAFF".equalsIgnoreCase(role)) {
+	%>
+
+	<%
 	if ("STAFF".equals(role)) {
 	%>
 	<jsp:include page="Staff/staffSidebar.jsp" />
@@ -244,8 +249,7 @@ to {
 
 		<%@ include file="Components/message.jsp"%>
 
-		<a href="managePatients.jsp" class="btn"><i
-			class="fa-solid fa-arrow-left"></i> Back</a>
+		<a href="managePatients.jsp" class="btn"> ⬅ Back </a>
 		<div class="upload-container">
 			<div class="glass-card">
 
@@ -287,6 +291,14 @@ to {
 			</div>
 		</div>
 	</div>
+
+	<%
+	} else {
+	response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+	return;
+	}
+	%>
+
 
 </body>
 

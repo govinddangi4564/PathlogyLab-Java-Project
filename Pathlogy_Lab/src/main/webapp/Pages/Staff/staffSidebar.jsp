@@ -24,9 +24,12 @@
 </head>
 
 <body>
-
 	<%
 	User us = (User) session.getAttribute("userObj");
+
+	String role = (String) session.getAttribute("role");
+
+	if ("STAFF".equals(role)) {
 	%>
 
 	<div class="sidebar role-staff" id="staffSidebar">
@@ -119,6 +122,13 @@
 					});
 		})();
 	</script>
+
+	<%
+	} else {
+	response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+	return;
+	}
+	%>
 
 </body>
 
