@@ -11,8 +11,8 @@ import com.pathology.model.Patient;
 
 public class PatientDao {
 
-	public int addPatient(Patient p) {
-		int i = 0;
+	public String addPatient(Patient p) {
+		String patientUID = null;
 
 		try {
 			Connection con = DBConnection.getConnection();
@@ -30,34 +30,43 @@ public class PatientDao {
 				userId = 0;
 			}
 
-			PreparedStatement pst = con.prepareStatement(
-					"INSERT INTO patients (patient_name, patient_email,patient_mobile, user_id) VALUES(?,?,?,?)",
-					PreparedStatement.RETURN_GENERATED_KEYS);
-			pst.setString(1, p.getPatientName());
-			pst.setString(2, p.getPatientEmail());
-			pst.setString(3, p.getPatientMobile());
-			pst.setInt(4, userId);
+			PreparedStatement pst3 = con.prepareStatement("SELECT patient_uid FROM patients WHERE patient_email = ?");
+			pst3.setString(1, p.getPatientEmail());
 
-			i = pst.executeUpdate();
+			ResultSet rs3 = pst3.executeQuery();
+			if (rs3.next()) {
+				patientUID = rs3.getString("patient_uid");
+			} else {
 
-			ResultSet rs = pst.getGeneratedKeys();
-			if (rs.next()) {
-				int id = rs.getInt(1);
+				PreparedStatement pst = con.prepareStatement(
+						"INSERT INTO patients (patient_name, patient_email,patient_mobile, user_id) VALUES(?,?,?,?)",
+						PreparedStatement.RETURN_GENERATED_KEYS);
+				pst.setString(1, p.getPatientName());
+				pst.setString(2, p.getPatientEmail());
+				pst.setString(3, p.getPatientMobile());
+				pst.setInt(4, userId);
 
-				String patientUID = "pt-" + (10000 + id);
+				pst.executeUpdate();
 
-				PreparedStatement pst1 = con.prepareStatement("UPDATE patients SET patient_uid = ? WHERE ID = ?");
-				pst1.setString(1, patientUID);
-				pst1.setInt(2, id);
+				ResultSet rs = pst.getGeneratedKeys();
+				if (rs.next()) {
+					int id = rs.getInt(1);
 
-				pst1.executeUpdate();
+					patientUID = "pt-" + (10000 + id);
+
+					PreparedStatement pst1 = con.prepareStatement("UPDATE patients SET patient_uid = ? WHERE ID = ?");
+					pst1.setString(1, patientUID);
+					pst1.setInt(2, id);
+
+					pst1.executeUpdate();
+				}
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
-		return i;
+		return patientUID;
 	}
 
 	public List<Patient> viewAllPatients() {
@@ -83,7 +92,7 @@ public class PatientDao {
 		List<Patient> list = new LinkedList<Patient>();
 
 		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pst = con.prepareStatement("SELECT * FROM patient LIMIT 15 OFFSET ?")) {
+				PreparedStatement pst = con.prepareStatement("SELECT * FROM patients LIMIT 15 OFFSET ?")) {
 			pst.setInt(1, offset);
 			ResultSet rs = pst.executeQuery();
 

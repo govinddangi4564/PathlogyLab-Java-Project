@@ -45,7 +45,6 @@ public class UploadReport extends HttpServlet {
 
 		String patientId = request.getParameter("patientId");
 		String title = request.getParameter("reportName");
-		String reportStatus = request.getParameter("reportStatus");
 
 		Part pt = request.getPart("reportFile");
 		String path = "D:\\All Codes\\Java FullStack Projects\\Pathlogy_Lab\\Pathlogy_Lab\\src\\main\\webapp\\reports\\";

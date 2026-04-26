@@ -42,14 +42,13 @@ public class AddPatientServlet extends HttpServlet {
 		PatientDao dao = new PatientDao();
 		Patient p = new Patient(name, email, mobile);
 
-		int i = dao.addPatient(p);
+		String patientUID = dao.addPatient(p);
 
-		if (i > 0) {
-			session.setAttribute("successMsg", "Patient Added Successfully");
+		if (patientUID != null) {
+			session.setAttribute("successMsg", "Patient Added Successfully. UID: " + patientUID);
 		} else {
 			session.setAttribute("errorMsg", "Something Went Wrong");
 		}
-
 		response.sendRedirect(request.getContextPath() + "/Pages/addPatient.jsp");
 	}
 }

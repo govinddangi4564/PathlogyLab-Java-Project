@@ -45,7 +45,7 @@
 		</a> <a href="<%=request.getContextPath()%>/userViewReports"
 			data-user-link="reports"> <i class="fa-solid fa-file-medical"></i>
 			My Reports
-		</a> <a href="#" data-user-link="appointments"> <i
+		</a> <a href="bookAppointment.jsp" data-user-link="appointments"> <i
 			class="fa-solid fa-calendar-check"></i> Appointments
 		</a> <span class="nav-label">Settings</span> <a
 			href="<%=request.getContextPath()%>/Pages/changePassword.jsp"
