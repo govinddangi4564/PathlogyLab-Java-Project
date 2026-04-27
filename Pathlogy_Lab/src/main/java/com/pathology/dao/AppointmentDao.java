@@ -105,4 +105,20 @@ public class AppointmentDao {
 
 		return ap;
 	}
+
+	public int updateAppointmentStatus(int id, String status) {
+		int i = 0;
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con.prepareStatement("UPDATE appointments SET status = ? WHERE id = ?")) {
+			pst.setString(1, status);
+			pst.setInt(2, id);
+
+			i = pst.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return i;
+	}
 }

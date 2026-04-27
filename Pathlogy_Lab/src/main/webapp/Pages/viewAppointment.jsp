@@ -101,78 +101,34 @@ body {
 	padding: 16px;
 }
 
-.appointment-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	gap: 14px;
-}
-
-.appointment-card {
+.table-wrap {
+	border: 1px solid #e2e8f0;
+	border-radius: 14px;
+	overflow: hidden;
 	background: #fff;
-	border: 1px solid var(--border);
-	border-radius: 18px;
-	box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
-	padding: 16px;
-	height: 100%;
-	transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.appointment-card:hover {
-	transform: translateY(-2px);
-	box-shadow: 0 14px 30px rgba(15, 23, 42, 0.09);
+.table .view-btn {
+	min-width: 86px;
+	font-size: 0.8rem;
+	font-weight: 600;
+	border-radius: 9px;
 }
 
-.appointment-card-head {
-	display: flex;
-	justify-content: space-between;
-	align-items: flex-start;
-	gap: 12px;
-	margin-bottom: 12px;
-}
-
-.appointment-index {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	min-width: 34px;
-	height: 34px;
-	padding: 0 10px;
-	border-radius: 10px;
-	background: #eef4ff;
-	border: 1px solid #cfe0ff;
-	color: #1d4ed8;
-	font-size: 0.82rem;
-	font-weight: 800;
-	flex: 0 0 auto;
-}
-
-.appointment-title {
-	font-size: 1.02rem;
-	font-weight: 700;
-	margin: 0;
-}
-
-.appointment-subtitle {
-	font-size: 0.86rem;
-	color: var(--muted);
-	margin-top: 2px;
-}
-
-.appointment-meta {
+.appointment-details-grid {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 10px;
-	margin-bottom: 14px;
 }
 
-.meta-item {
+.detail-item {
 	background: #f8fbff;
 	border: 1px solid #e8eef7;
 	border-radius: 12px;
 	padding: 10px 12px;
 }
 
-.meta-label {
+.detail-label {
 	display: block;
 	font-size: 0.73rem;
 	font-weight: 700;
@@ -182,7 +138,7 @@ body {
 	margin-bottom: 4px;
 }
 
-.meta-value {
+.detail-value {
 	font-size: 0.92rem;
 	font-weight: 600;
 	color: var(--text);
@@ -193,7 +149,14 @@ body {
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
-	margin-top: 2px;
+}
+
+.modal {
+	z-index: 2000;
+}
+
+.modal-backdrop {
+	z-index: 1990;
 }
 
 .filter-row .form-control, .filter-row .form-select {
@@ -270,7 +233,7 @@ body {
 	.page-title {
 		font-size: 1.45rem;
 	}
-	.appointment-meta {
+	.appointment-details-grid {
 		grid-template-columns: 1fr;
 	}
 }
@@ -370,105 +333,177 @@ body {
 				</div>
 
 				<div class="section-label">Appointments</div>
-				<div class="appointment-grid">
-					<%
-					int count = 1;
-					if (list != null) {
-						for (Appointment ap : list) {
-							String status = ap.getStatus();
-							String statusClass = "status-pending";
-							if ("Confirmed".equalsIgnoreCase(status)) {
-						statusClass = "status-confirmed";
-							} else if ("Cancelled".equalsIgnoreCase(status)) {
-						statusClass = "status-cancelled";
+				<div class="table-wrap table-responsive">
+					<table class="table table-hover mb-0 align-middle">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Patient Name</th>
+								<th>Test Name</th>
+								<th>Appointment Date</th>
+								<th>Status</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							int count = 1;
+							if (list != null && !list.isEmpty()) {
+								for (Appointment ap : list) {
+									String status = ap.getStatus();
+									String statusClass = "status-pending";
+									if ("Confirmed".equalsIgnoreCase(status)) {
+								statusClass = "status-confirmed";
+									} else if ("Cancelled".equalsIgnoreCase(status)) {
+								statusClass = "status-cancelled";
+									}
+									String modalId = "appointmentModal" + ap.getId();
+							%>
+							<tr>
+								<td><%=count%></td>
+								<td><%=ap.getPatientName()%></td>
+								<td><%=ap.getTestName()%></td>
+								<td><%=ap.getAppointmentDate()%></td>
+								<td><span class="status-pill <%=statusClass%>"> <%=status%>
+								</span></td>
+								<td>
+									<button type="button"
+										class="btn btn-outline-primary btn-sm view-btn"
+										data-bs-toggle="modal" data-bs-target="#<%=modalId%>">
+										<i class="fa-solid fa-eye me-1"></i>View
+									</button>
+								</td>
+							</tr>
+							<%
+							count++;
 							}
-					%>
-					<div class="appointment-card">
-						<div class="appointment-card-head">
-							<div class="appointment-index">
-								<%=count++%>
-							</div>
-							<div class="flex-grow-1">
-								<h3 class="appointment-title">
-									<%=ap.getPatientName()%>
-								</h3>
-								<div class="appointment-subtitle">
-									Patient ID:
-									<%=ap.getPatientId()%>
-								</div>
-							</div>
-							<span class="status-pill <%=statusClass%>"> <%=status%>
-							</span>
-						</div>
+							} else {
+							%>
+							<tr>
+								<td colspan="6" class="text-center text-muted py-4">No
+									appointments found.</td>
+							</tr>
+							<%
+							}
+							%>
+						</tbody>
+					</table>
+				</div>
 
-						<div class="appointment-meta">
-							<div class="meta-item">
-								<span class="meta-label">Email</span>
-								<div class="meta-value">
-									<%=ap.getPatientEmail()%>
-								</div>
-							</div>
-							<div class="meta-item">
-								<span class="meta-label">Mobile</span>
-								<div class="meta-value">
-									<%=ap.getPatientMobile()%>
-								</div>
-							</div>
-							<div class="meta-item">
-								<span class="meta-label">Test</span>
-								<div class="meta-value">
-									<%=ap.getTestName()%>
-								</div>
-							</div>
-							<div class="meta-item">
-								<span class="meta-label">Date</span>
-								<div class="meta-value">
-									<%=ap.getAppointmentDate()%>
-								</div>
-							</div>
-							<div class="meta-item">
-								<span class="meta-label">Time</span>
-								<div class="meta-value">
-									<%=ap.getAppointmentTime()%>
-								</div>
-							</div>
-							<div class="meta-item">
-								<span class="meta-label">Location</span>
-								<div class="meta-value">
-									<%=ap.getLabLocation()%>
-								</div>
-							</div>
-							<div class="meta-item">
-								<span class="meta-label">Priority</span>
-								<div class="meta-value">
-									<%=ap.getPriority()%>
-								</div>
+			</div>
+		</div>
+	</div>
+
+	<%
+	if (list != null && !list.isEmpty()) {
+		for (Appointment ap : list) {
+			String status = ap.getStatus();
+			String statusClass = "status-pending";
+			if ("Confirmed".equalsIgnoreCase(status)) {
+		statusClass = "status-confirmed";
+			} else if ("Cancelled".equalsIgnoreCase(status)) {
+		statusClass = "status-cancelled";
+			}
+			String modalId = "appointmentModal" + ap.getId();
+	%>
+	<div class="modal fade" id="<%=modalId%>" tabindex="-1"
+		aria-labelledby="<%=modalId%>Label" aria-hidden="true">
+		<div
+			class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="<%=modalId%>Label">
+						Appointment Details -
+						<%=ap.getPatientName()%>
+					</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="appointment-details-grid">
+						<div class="detail-item">
+							<span class="detail-label">Patient ID</span>
+							<div class="detail-value">
+								<%=ap.getPatientId()%>
 							</div>
 						</div>
-
-						<form
-							action="<%=request.getContextPath()%>/appointmentConfirmation"
-							method="post">
-							<div class="appointment-actions">
-								<input type="hidden" name="id" value="<%=ap.getId()%>">
-
-								<button type="submit" name="action" value="confirm"
-									class="btn btn-success btn-sm action-btn">Confirm</button>
-
-								<button type="submit" name="action" value="cancel"
-									formaction="cancelAppointment"
-									class="btn btn-warning btn-sm action-btn">Cancel</button>
+						<div class="detail-item">
+							<span class="detail-label">Patient Name</span>
+							<div class="detail-value">
+								<%=ap.getPatientName()%>
 							</div>
-						</form>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Email</span>
+							<div class="detail-value">
+								<%=ap.getPatientEmail()%>
+							</div>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Mobile</span>
+							<div class="detail-value">
+								<%=ap.getPatientMobile()%>
+							</div>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Test Name</span>
+							<div class="detail-value">
+								<%=ap.getTestName()%>
+							</div>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Appointment Date</span>
+							<div class="detail-value">
+								<%=ap.getAppointmentDate()%>
+							</div>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Appointment Time</span>
+							<div class="detail-value">
+								<%=ap.getAppointmentTime()%>
+							</div>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Lab Location</span>
+							<div class="detail-value">
+								<%=ap.getLabLocation()%>
+							</div>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Priority</span>
+							<div class="detail-value">
+								<%=ap.getPriority()%>
+							</div>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Status</span>
+							<div class="detail-value">
+								<span class="status-pill <%=statusClass%>"> <%=status%>
+								</span>
+							</div>
+						</div>
 					</div>
-					<%
-					}
-					}
-					%>
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-outline-secondary"
+						data-bs-dismiss="modal">Close</button>
+					<form
+						action="<%=request.getContextPath()%>/appointmentConfirmation"
+						method="post" class="appointment-actions m-0">
+						<input type="hidden" name="id" value="<%=ap.getId()%>">
+						<button type="submit" name="status" value="Confirmed"
+							class="btn btn-success btn-sm action-btn">Confirm</button>
+						<button type="submit" name="status" value="Cancelled"
+							class="btn btn-warning btn-sm action-btn">Cancel</button>
+					</form>
 				</div>
 			</div>
 		</div>
 	</div>
+	<%
+	}
+	}
+	%>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

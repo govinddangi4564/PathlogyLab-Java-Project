@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 
 import com.pathology.dao.AppointmentDao;
 import com.pathology.model.Appointment;
+import com.pathology.service.EmailService;
+import com.pathology.template.AppointmentTemplate;
 
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
@@ -35,70 +37,33 @@ public class SendAppointmentConfirmation extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
+		String status = request.getParameter("status");
 
 		AppointmentDao dao = new AppointmentDao();
 		Appointment ap = dao.getAppointmentById(id);
 
 		String toEmail = ap.getPatientEmail();
-		String patientName = ap.getPatientName();
-		Date appointmentDate = ap.getAppointmentDate();
-		LocalTime appointmentTime = ap.getAppointmentTime();
-		String testName = ap.getTestName();
+		String name = ap.getPatientName();
+		Date apDate = ap.getAppointmentDate();
+		LocalTime apTime = ap.getAppointmentTime();
+		String test = ap.getTestName();
+
+		String subject = "Appointment Confirmation";
+
+		String body = AppointmentTemplate.getTemplate(name, apDate, apTime, test);
 
 		HttpSession session = request.getSession();
 
-		ResourceBundle bundle = ResourceBundle.getBundle("config");
-		String fromEmail = bundle.getString("email.from");
-		String appPass = bundle.getString("email.password");
-		String smtpHost = bundle.getString("email.smtp.host");
-		String smtpPort = bundle.getString("email.smtp.port");
-
-		Properties props = new Properties();
-		props.setProperty("mail.smtp.auth", "true");
-		props.setProperty("mail.smtp.starttls.enable", "true");
-		props.setProperty("mail.smtp.host", smtpHost);
-		props.setProperty("mail.smtp.port", smtpPort);
-
-		Session mailSession = Session.getInstance(props, new Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(fromEmail, appPass);
-			}
-		});
-
 		try {
-			MimeMessage msg = new MimeMessage(mailSession);
-			msg.setFrom(new InternetAddress(fromEmail));
-			msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-			msg.setSubject("Appointment Confirmation");
+			EmailService.sendEmail(toEmail, subject, body);
 
-			String message = "<html>"
-					+ "<body style='font-family:Arial, sans-serif; background:#f4f6f8; padding:20px;'>"
+			int i = dao.updateAppointmentStatus(id, status);
 
-					+ "<div style='max-width:500px; margin:auto; background:#ffffff; padding:25px; border-radius:10px; box-shadow:0 5px 15px rgba(0,0,0,0.1);'>"
-
-					+ "<h2 style='color:#0b7a75; text-align:center;'>Pathology Lab</h2>"
-					+ "<hr style='border:none; border-top:1px solid #eee;'>"
-
-					+ "<p style='font-size:15px;'>Dear " + patientName + ",</p>"
-
-					+ "<p style='font-size:15px;'>Your appointment has been <b style='color:#0b7a75;'>confirmed</b>.</p>"
-
-					+ "<div style='background:#f9fbfc; padding:15px; border-radius:8px; margin:20px 0;'>"
-					+ "<p><b>Date:</b> " + appointmentDate + "</p>" + "<p><b>Time:</b> " + appointmentTime + "</p>"
-					+ "<p><b>Test:</b> " + testName + "</p>" + "</div>"
-
-					+ "<p style='font-size:14px; color:#555;'>Please arrive 10 minutes early.</p>"
-
-					+ "<hr style='border:none; border-top:1px solid #eee;'>"
-					+ "<p style='font-size:13px; color:#888; text-align:center;'>© 2026 Pathology Lab</p>"
-
-					+ "</div></body></html>";
-
-			msg.setContent(message, "text/html");
-
-			Transport.send(msg);
-
-			session.setAttribute("successMsg", "Appointment email sent successfully");
+			if (i > 0) {
+				session.setAttribute("successMsg", "Appointment confirmed & email sent");
+			} else {
+				session.setAttribute("errorMsg", "Status update failed");
+			}
 
 		} catch (MessagingException e) {
 			e.printStackTrace();
