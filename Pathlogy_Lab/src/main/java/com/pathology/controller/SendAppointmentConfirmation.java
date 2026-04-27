@@ -3,22 +3,13 @@ package com.pathology.controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalTime;
-import java.util.Properties;
-import java.util.ResourceBundle;
 
 import com.pathology.dao.AppointmentDao;
 import com.pathology.model.Appointment;
 import com.pathology.service.EmailService;
 import com.pathology.template.AppointmentTemplate;
 
-import jakarta.mail.Authenticator;
-import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

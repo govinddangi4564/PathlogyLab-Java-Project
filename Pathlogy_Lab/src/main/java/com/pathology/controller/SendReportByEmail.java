@@ -1,30 +1,20 @@
 package com.pathology.controller;
 
-import jakarta.mail.Authenticator;
-import jakarta.mail.Message;
-import jakarta.mail.MessagingException;
-import jakarta.mail.Multipart;
-import jakarta.mail.PasswordAuthentication;
-import jakarta.mail.Session;
-import jakarta.mail.Transport;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.MimeBodyPart;
-import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.internet.MimeMultipart;
+import java.io.File;
+import java.io.IOException;
+import java.util.ResourceBundle;
+
+import com.pathology.dao.ReportDao;
+import com.pathology.model.Report;
+import com.pathology.service.EmailFileService;
+import com.pathology.template.ReportTemplate;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.ResourceBundle;
-
-import com.pathology.dao.ReportDao;
-import com.pathology.model.Report;
 
 @WebServlet("/sendReport")
 public class SendReportByEmail extends HttpServlet {
@@ -43,70 +33,30 @@ public class SendReportByEmail extends HttpServlet {
 		ReportDao dao = new ReportDao();
 		Report r = dao.getReport(id);
 
-		String fileName = r.getReportPath();
 		String toEmail = r.getPatientEmail();
+		String fileName = r.getReportPath();
 
-		// Load credentials from properties file
 		ResourceBundle bundle = ResourceBundle.getBundle("config");
-		String fromEmail = bundle.getString("email.from");
-		String appPass = bundle.getString("email.password");
-		String smtpHost = bundle.getString("email.smtp.host");
-		String smtpPort = bundle.getString("email.smtp.port");
 		String reportsPath = bundle.getString("reports.path");
 
-		Properties props = new Properties();
-		props.setProperty("mail.smtp.auth", "true");
-		props.setProperty("mail.smtp.starttls.enable", "true");
-		props.setProperty("mail.smtp.host", smtpHost);
-		props.setProperty("mail.smtp.port", smtpPort);
+		File file = new File(reportsPath + fileName);
 
-		Session mailSession = Session.getInstance(props, new Authenticator() {
-			protected PasswordAuthentication getPasswordAuthentication() {
-				return new PasswordAuthentication(fromEmail, appPass);
-			}
-		});
+		String body = ReportTemplate.getTemplate();
 
-		try {
-			MimeMessage ms = new MimeMessage(mailSession);
-			ms.setFrom(new InternetAddress(fromEmail));
-			ms.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
+		String subject = "Your Medical Report - Pathology Lab";
 
-			ms.setSubject("Your Medical Report");
+		EmailFileService.sendWithAttachment(toEmail, subject, body, file);
 
-			MimeBodyPart textPart = new MimeBodyPart();
-			textPart.setText("Dear Patient,\n\nYour report is attached.\n\nThank you.");
+		int i = dao.updateStatus(id);
+		int j = dao.markEmailSent(id);
 
-			String fullPath = reportsPath + fileName;
-
-			File file = new File(fullPath);
-
-			MimeBodyPart filePart = new MimeBodyPart();
-			filePart.attachFile(file);
-
-			Multipart mul = new MimeMultipart();
-			mul.addBodyPart(textPart);
-			mul.addBodyPart(filePart);
-
-			ms.setContent(mul);
-
-			try {
-				Transport.send(ms);
-
-				int i = dao.updateStatus(id);
-				int j = dao.markEmailSent(id);
-
-				if (i > 0 && j > 0) {
-					session.setAttribute("successMsg", "Report sent successfully!");
-				}
-			} catch (Exception e) {
-				session.setAttribute("errorMsg", "Failed to send email!");
-			}
-
-			response.sendRedirect(request.getContextPath() + "/viewAllReports");
-
-		} catch (MessagingException e) {
-			e.printStackTrace();
+		if (i > 0 && j > 0) {
+			session.setAttribute("successMsg", "Report sent successfully!");
+		} else {
+			session.setAttribute("errorMsg", "Database update failed!");
 		}
+
+		response.sendRedirect(request.getContextPath() + "/viewAllReports");
 	}
 
 }
