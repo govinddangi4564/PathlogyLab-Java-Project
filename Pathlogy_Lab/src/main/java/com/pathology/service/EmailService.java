@@ -16,12 +16,15 @@ public class EmailService {
 
 	public static void sendEmail(String toEmail, String subject, String body) throws MessagingException {
 
-		ResourceBundle bundle = ResourceBundle.getBundle("config");
+		ResourceBundle bundle = null;
+		try {
+			bundle = ResourceBundle.getBundle("config");
+		} catch (Exception e) {}
 
-		String fromEmail = System.getenv("EMAIL_FROM") != null ? System.getenv("EMAIL_FROM") : bundle.getString("email.from");
-		String appPass = System.getenv("EMAIL_PASSWORD") != null ? System.getenv("EMAIL_PASSWORD") : bundle.getString("email.password");
-		String smtpHost = bundle.getString("email.smtp.host");
-		String smtpPort = bundle.getString("email.smtp.port");
+		String fromEmail = System.getenv("EMAIL_FROM") != null ? System.getenv("EMAIL_FROM") : (bundle != null ? bundle.getString("email.from") : "");
+		String appPass = System.getenv("EMAIL_PASSWORD") != null ? System.getenv("EMAIL_PASSWORD") : (bundle != null ? bundle.getString("email.password") : "");
+		String smtpHost = bundle != null ? bundle.getString("email.smtp.host") : "smtp.gmail.com";
+		String smtpPort = bundle != null ? bundle.getString("email.smtp.port") : "587";
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");

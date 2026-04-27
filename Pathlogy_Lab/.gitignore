@@ -1,5 +1,5 @@
 # Credentials & Configuration
-src/main/resources/config.properties
+# src/main/resources/config.properties
 
 # Build
 /target/

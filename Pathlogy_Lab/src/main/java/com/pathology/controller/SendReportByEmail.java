@@ -36,7 +36,11 @@ public class SendReportByEmail extends HttpServlet {
 		String toEmail = r.getPatientEmail();
 		String fileName = r.getReportPath();
 
-		ResourceBundle bundle = ResourceBundle.getBundle("config");
+		ResourceBundle bundle = null;
+		try {
+			bundle = ResourceBundle.getBundle("config");
+		} catch (Exception e) {}
+
 		String reportsPath = System.getenv("REPORTS_PATH") != null ? System.getenv("REPORTS_PATH") : getServletContext().getRealPath("/reports/");
 		if (!reportsPath.endsWith(File.separator)) {
 			reportsPath += File.separator;

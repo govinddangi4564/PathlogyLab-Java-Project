@@ -19,12 +19,24 @@ import jakarta.mail.internet.MimeMultipart;
 
 public class EmailFileService {
 
-	private static final ResourceBundle bundle = ResourceBundle.getBundle("config");
+	private static ResourceBundle bundle;
+	static {
+		try {
+			bundle = ResourceBundle.getBundle("config");
+		} catch (Exception e) {}
+	}
 
-	private static final String FROM_EMAIL = System.getenv("EMAIL_FROM") != null ? System.getenv("EMAIL_FROM") : bundle.getString("email.from");
-	private static final String APP_PASS = System.getenv("EMAIL_PASSWORD") != null ? System.getenv("EMAIL_PASSWORD") : bundle.getString("email.password");
-	private static final String SMTP_HOST = bundle.getString("email.smtp.host");
-	private static final String SMTP_PORT = bundle.getString("email.smtp.port");
+	private static String getProp(String key, String defaultValue) {
+		if (bundle != null && bundle.containsKey(key)) {
+			return bundle.getString(key);
+		}
+		return defaultValue;
+	}
+
+	private static final String FROM_EMAIL = System.getenv("EMAIL_FROM") != null ? System.getenv("EMAIL_FROM") : getProp("email.from", "");
+	private static final String APP_PASS = System.getenv("EMAIL_PASSWORD") != null ? System.getenv("EMAIL_PASSWORD") : getProp("email.password", "");
+	private static final String SMTP_HOST = getProp("email.smtp.host", "smtp.gmail.com");
+	private static final String SMTP_PORT = getProp("email.smtp.port", "587");
 
 	public static boolean sendWithAttachment(String toEmail, String subject, String body, File file) {
 
