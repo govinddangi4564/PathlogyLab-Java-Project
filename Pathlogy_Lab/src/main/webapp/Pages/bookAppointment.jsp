@@ -151,11 +151,33 @@ body {
 </head>
 
 <body>
-	<%@include file="userSidebar.jsp"%>
-	<%@ include file="../Components/loader.jsp"%>
+	<%@ include file="Components/auth.jsp"%>
+
+	<%
+	String role = (String) mySession.getAttribute("role");
+
+	if ("ADMIN".equalsIgnoreCase(role) || "STAFF".equalsIgnoreCase(role) || "USER".equalsIgnoreCase(role)) {
+	%>
+
+	<%
+	if ("STAFF".equals(role)) {
+	%>
+	<jsp:include page="Staff/staffSidebar.jsp" />
+	<%
+	} else if ("ADMIN".equals(role)) {
+	%>
+	<jsp:include page="adminSidebar.jsp" />
+	<%
+	} else if ("USER".equals(role)) {
+	%>
+	<jsp:include page="User/userSidebar.jsp" />
+	<%
+	}
+	%>
+	%>
 
 	<div class="page-wrap">
-		<%@include file="../Components/message.jsp"%>
+		<%@include file="Components/message.jsp"%>
 		<div class="booking-panel">
 			<div class="panel-head">
 				<div class="icon-chip">
@@ -208,6 +230,10 @@ body {
 							name="appointmentDate" class="form-control" required>
 					</div>
 
+					<%
+					if ("USER".equals(role)) {
+					%>
+
 					<div class="col-md-6">
 						<label for="timeSlot" class="form-label">Time Slot</label> <select
 							id="timeSlot" name="appointmentTime" class="form-select" required>
@@ -220,6 +246,9 @@ body {
 							<option value="14:30">14:30-15:00</option>
 						</select>
 					</div>
+					<%
+					}
+					%>
 
 					<div class="col-md-6">
 						<label for="labLocation" class="form-label">Lab Location</label> <select
@@ -248,6 +277,28 @@ body {
 						</div>
 					</div>
 
+					<%
+					if ("USER".equals(role)) {
+					%>
+
+					<input type="hidden" name="mode" value="Online"> <input
+						type="hidden" name="status" value="Booked">
+
+					<%
+					}
+					%>
+
+					<%
+					if ("ADMIN".equalsIgnoreCase(role) || "STAFF".equalsIgnoreCase(role)) {
+					%>
+
+					<input type="hidden" name="mode" value="Offline"> <input
+						type="hidden" name="status" value="Confirmed">
+
+					<%
+					}
+					%>
+
 					<div class="col-12 mt-1">
 						<button type="submit" class="btn-book">
 							<i class="fa-solid fa-paper-plane me-2"></i>Book Appointment
@@ -267,6 +318,13 @@ body {
 				+ String(today.getDate()).padStart(2, "0");
 		appointmentDate.min = localMinDate;
 	</script>
+
+	<%
+	} else {
+	response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
+	return;
+	}
+	%>
 </body>
 
 </html>

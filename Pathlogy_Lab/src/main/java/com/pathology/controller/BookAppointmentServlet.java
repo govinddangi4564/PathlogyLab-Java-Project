@@ -2,12 +2,11 @@ package com.pathology.controller;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.pathology.dao.AppointmentDao;
-import com.pathology.dao.PatientDao;
 import com.pathology.model.Appointment;
-import com.pathology.model.Patient;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -33,43 +32,39 @@ public class BookAppointmentServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 
-		String test = request.getParameter("testName");
-
-		String appointmentDate = request.getParameter("appointmentDate");
-		Date apDate = Date.valueOf(appointmentDate);
-
-		String appointmentTime = request.getParameter("appointmentTime");
-		LocalTime apTime = LocalTime.parse(appointmentTime);
-
-		String loc = request.getParameter("labLocation");
-		String priority = request.getParameter("priority");
-
 		String name = request.getParameter("patientName");
 		String email = request.getParameter("patientEmail");
 		String mobile = request.getParameter("patientMobile");
+		String test = request.getParameter("testName");
 
-		PatientDao pDao = new PatientDao();
-		AppointmentDao apDao = new AppointmentDao();
+		String appointmentDate = request.getParameter("appointmentDate");
+		LocalDate localDate = LocalDate.parse(appointmentDate);
+		Date apDate = Date.valueOf(localDate);
 
-		Patient p = new Patient(name, email, mobile);
-		String patientUID = pDao.addPatient(p);
+		String appointmentTime = request.getParameter("appointmentTime");
+		LocalTime apTime = null;
 
-		if (patientUID == null) {
-			session.setAttribute("errorMsg", "Patient creation failed");
-			response.sendRedirect(request.getContextPath() + "/Pages/bookAppointment.jsp");
-			return;
+		if (appointmentTime != null && !appointmentTime.isEmpty()) {
+			apTime = LocalTime.parse(appointmentTime);
 		}
 
-		Appointment ap = new Appointment(patientUID, test, apDate, apTime, loc, priority);
+		String loc = request.getParameter("labLocation");
+		String priority = request.getParameter("priority");
+		String mode = request.getParameter("mode");
+		String status = request.getParameter("status");
+
+		Appointment ap = new Appointment(name, email, mobile, test, apDate, apTime, loc, status, priority, mode);
+
+		AppointmentDao apDao = new AppointmentDao();
 
 		int i = apDao.bookAppointment(ap);
 
 		if (i > 0) {
-			session.setAttribute("successMsg", "Appointment Booked Successfully (Patient UID: " + patientUID + ")");
+			session.setAttribute("successMsg", "Appointment Booked Successfully.");
 		} else {
 			session.setAttribute("errorMsg", "Appointment Booking Failed");
 		}
 
-		response.sendRedirect(request.getContextPath() + "/Pages/User/bookAppointment.jsp");
+		response.sendRedirect(request.getContextPath() + "/Pages/bookAppointment.jsp");
 	}
 }

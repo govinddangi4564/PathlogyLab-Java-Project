@@ -27,8 +27,9 @@ public class SendAppointmentConfirmation extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
 		int id = Integer.parseInt(request.getParameter("id"));
-		String status = request.getParameter("status");
+		String status = request.getParameter("status"); // confirmed / cancelled
 
 		AppointmentDao dao = new AppointmentDao();
 		Appointment ap = dao.getAppointmentById(id);
@@ -39,9 +40,9 @@ public class SendAppointmentConfirmation extends HttpServlet {
 		LocalTime apTime = ap.getAppointmentTime();
 		String test = ap.getTestName();
 
-		String subject = "Appointment Confirmation";
+		String subject = status.equalsIgnoreCase("confirmed") ? "Appointment Confirmed" : "Appointment Cancelled";
 
-		String body = AppointmentTemplate.getTemplate(name, apDate, apTime, test);
+		String body = AppointmentTemplate.getTemplate(name, apDate, apTime, test, status);
 
 		HttpSession session = request.getSession();
 
@@ -51,7 +52,10 @@ public class SendAppointmentConfirmation extends HttpServlet {
 			int i = dao.updateAppointmentStatus(id, status);
 
 			if (i > 0) {
-				session.setAttribute("successMsg", "Appointment confirmed & email sent");
+				String msg = status.equalsIgnoreCase("confirmed") ? "Appointment confirmed & email sent"
+						: "Appointment cancelled & email sent";
+
+				session.setAttribute("successMsg", msg);
 			} else {
 				session.setAttribute("errorMsg", "Status update failed");
 			}

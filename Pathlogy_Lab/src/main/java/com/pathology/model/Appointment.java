@@ -22,17 +22,7 @@ public class Appointment {
 	private String labLocation;
 	private String status;
 	private String priority;
-
-	public Appointment(String patientId, String testName, Date appointmentDate, LocalTime appointmentTime,
-			String labLocation, String priority) {
-		super();
-		this.patientId = patientId;
-		this.testName = testName;
-		this.appointmentDate = appointmentDate;
-		this.appointmentTime = appointmentTime;
-		this.labLocation = labLocation;
-		this.priority = priority;
-	}
+	private String mode;
 
 	public Appointment(String patientId, String patientName, String patientEmail, String patientMobile) {
 		super();
@@ -40,6 +30,39 @@ public class Appointment {
 		this.patientName = patientName;
 		this.patientEmail = patientEmail;
 		this.patientMobile = patientMobile;
+	}
+
+	public Appointment(int id, String patientId, String patientName, String patientEmail, String patientMobile,
+			String testName, Date appointmentDate, LocalTime appointmentTime, String labLocation, String status,
+			String priority) {
+		super();
+		this.id = id;
+		this.patientId = patientId;
+		this.patientName = patientName;
+		this.patientEmail = patientEmail;
+		this.patientMobile = patientMobile;
+		this.testName = testName;
+		this.appointmentDate = appointmentDate;
+		this.appointmentTime = appointmentTime;
+		this.labLocation = labLocation;
+		this.status = status;
+		this.priority = priority;
+	}
+
+	public Appointment(String patientName, String patientEmail, String patientMobile, String testName,
+			Date appointmentDate, LocalTime appointmentTime, String labLocation, String status, String priority,
+			String mode) {
+		super();
+		this.patientName = patientName;
+		this.patientEmail = patientEmail;
+		this.patientMobile = patientMobile;
+		this.testName = testName;
+		this.appointmentDate = appointmentDate;
+		this.appointmentTime = appointmentTime;
+		this.labLocation = labLocation;
+		this.status = status;
+		this.priority = priority;
+		this.mode = mode;
 	}
 
 }

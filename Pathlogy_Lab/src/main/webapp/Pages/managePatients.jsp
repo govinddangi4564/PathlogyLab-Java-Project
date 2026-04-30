@@ -68,11 +68,13 @@
 
 						<i class="bi bi-briefcase-fill fs-1 text-success"></i>
 
-						<h4 class="mt-3">Add Patients</h4>
-						<p class="text-muted">Add Patients name, email and phone</p>
+						<h4 class="mt-3">Book Appointment</h4>
+						<p class="text-muted">Easily schedule patient appointments for
+							both online and offline visits, with automatic token generation.</p>
 
-						<a href="addPatient.jsp" class="btn btn-success px-4"> <i
-							class="bi bi-plus"></i> Add Patients
+						<a href="<%=request.getContextPath()%>/Pages/bookAppointment.jsp"
+							class="btn btn-success px-4"> <i class="bi bi-plus"></i> Book
+							Appointment
 						</a>
 
 					</div>
