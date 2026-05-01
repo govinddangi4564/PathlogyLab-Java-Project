@@ -204,27 +204,4 @@ public class AppointmentDao {
 		}
 		return i;
 	}
-
-//	public int generateTokenNumber() {
-//		int i = 0;
-//		int tokenNo = 0;
-//
-//		try (Connection con = DBConnection.getConnection();
-//				PreparedStatement pst = con.prepareStatement(
-//						"SELECT COUNT(*) + 1 AS next_token FROM appointments WHERE appointment_date = CURDATE() AND status = 'Confirmed'")) {
-//			ResultSet rs = pst.executeQuery();
-//			if (rs.next()) {
-//				tokenNo = rs.getInt("next_token");
-//			}
-//			
-//			PreparedStatement pst1 = con.prepareStatement("UPDATE appointments SET token_no = ?");
-//			pst1.setInt(1, tokenNo);
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//
-//		return i;
-//	}
-
 }

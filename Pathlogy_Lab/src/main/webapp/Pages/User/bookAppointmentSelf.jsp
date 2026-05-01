@@ -1,11 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Book Appointment | PathLab</title>
 
 <link
@@ -18,37 +16,23 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
 	rel="stylesheet">
 
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Css/bookAppointment.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/Css/bookAppointment.css">
 </head>
 
 <body>
-	<%@ include file="Components/auth.jsp"%>
+	<%@ include file="../Components/auth.jsp"%>
 
 	<%
 	String role = (String) mySession.getAttribute("role");
 
-	if ("ADMIN".equalsIgnoreCase(role) || "STAFF".equalsIgnoreCase(role) || "USER".equalsIgnoreCase(role)) {
+	if ("USER".equals(role)) {
 	%>
+	<jsp:include page="userSidebar.jsp" />
 
-	<%
-	if ("STAFF".equals(role)) {
-	%>
-	<jsp:include page="Staff/staffSidebar.jsp" />
-	<%
-	} else if ("ADMIN".equals(role)) {
-	%>
-	<jsp:include page="adminSidebar.jsp" />
-	<%
-	} else if ("USER".equals(role)) {
-	%>
-	<jsp:include page="User/userSidebar.jsp" />
-	<%
-	}
-	%>
-	%>
 
 	<div class="page-wrap">
-		<%@include file="Components/message.jsp"%>
+		<%@include file="../Components/message.jsp"%>
 		<div class="booking-panel">
 			<div class="panel-head">
 				<div class="icon-chip">
@@ -62,27 +46,9 @@
 			</div>
 
 			<form id="appointmentForm"
-				action="<%=request.getContextPath()%>/bookAppointment" method="post">
+				action="<%=request.getContextPath()%>/bookAppointment"
+				method="post">
 				<div class="row g-3">
-					<div class="col-md-4">
-						<label for="patientName" class="form-label">Patient Name</label> <input
-							type="text" id="patientName" name="patientName"
-							class="form-control" placeholder="Enter patient name" required>
-					</div>
-
-					<div class="col-md-4">
-						<label for="patientEmail" class="form-label">Patient Email</label>
-						<input type="email" id="patientEmail" name="patientEmail"
-							class="form-control" placeholder="Enter email address" required>
-					</div>
-
-					<div class="col-md-4">
-						<label for="patientMobile" class="form-label">Patient
-							Mobile</label> <input type="tel" id="patientMobile" name="patientMobile"
-							class="form-control" placeholder="Enter mobile number"
-							pattern="[0-9]{10}" required>
-					</div>
-
 					<div class="col-md-6">
 						<label for="testName" class="form-label">Test Name</label> <select
 							id="testName" name="testName" class="form-select" required>
@@ -101,10 +67,6 @@
 							name="appointmentDate" class="form-control" required>
 					</div>
 
-					<%
-					if ("USER".equals(role)) {
-					%>
-
 					<div class="col-md-6">
 						<label for="timeSlot" class="form-label">Time Slot</label> <select
 							id="timeSlot" name="appointmentTime" class="form-select" required>
@@ -117,9 +79,6 @@
 							<option value="14:30">14:30-15:00</option>
 						</select>
 					</div>
-					<%
-					}
-					%>
 
 					<div class="col-md-6">
 						<label for="labLocation" class="form-label">Lab Location</label> <select
@@ -148,27 +107,11 @@
 						</div>
 					</div>
 
-					<%
-					if ("USER".equals(role)) {
-					%>
-
 					<input type="hidden" name="mode" value="Online"> <input
-						type="hidden" name="status" value="Booked">
-
-					<%
-					}
-					%>
-
-					<%
-					if ("ADMIN".equalsIgnoreCase(role) || "STAFF".equalsIgnoreCase(role)) {
-					%>
-
-					<input type="hidden" name="mode" value="Offline"> <input
-						type="hidden" name="status" value="Confirmed">
-
-					<%
-					}
-					%>
+						type="hidden" name="status" value="Booked"> <input
+						type="hidden" name="patientName" value="<%=u.getName()%>"> <input
+						type="hidden" name="patientEmail" value="<%=u.getEmail()%>"> <input
+						type="hidden" name="patientMobile" value="<%=u.getMobile()%>">
 
 					<div class="col-12 mt-1">
 						<button type="submit" class="btn-book">

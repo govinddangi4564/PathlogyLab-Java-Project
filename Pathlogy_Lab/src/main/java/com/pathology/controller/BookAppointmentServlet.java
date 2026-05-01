@@ -23,14 +23,11 @@ public class BookAppointmentServlet extends HttpServlet {
 		super();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-	}
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession();
+		String role = (String) session.getAttribute("role");
 
 		String name = request.getParameter("patientName");
 		String email = request.getParameter("patientEmail");
@@ -65,6 +62,10 @@ public class BookAppointmentServlet extends HttpServlet {
 			session.setAttribute("errorMsg", "Appointment Booking Failed");
 		}
 
-		response.sendRedirect(request.getContextPath() + "/Pages/bookAppointment.jsp");
+		if ("USER".equals(role)) {
+			response.sendRedirect(request.getContextPath() + "/Pages/bookAppointment.jsp");
+		} else {
+			response.sendRedirect(request.getContextPath() + "/Pages/User/bookAppointmentSelf.jsp");
+		}
 	}
 }
