@@ -264,10 +264,9 @@ body {
 	<%
 	List<Appointment> list = (List<Appointment>) request.getAttribute("appointmentList");
 	%>
-	
+
 	<%
 	AppointmentDao dao = new AppointmentDao();
-	
 	%>
 
 	<div class="main-content">
@@ -348,6 +347,7 @@ body {
 								<th>Test Name</th>
 								<th>Appointment Date</th>
 								<th>Status</th>
+								<th>Token no.</th>
 								<th>Action</th>
 							</tr>
 						</thead>
@@ -372,6 +372,7 @@ body {
 								<td><%=ap.getAppointmentDate()%></td>
 								<td><span class="status-pill <%=statusClass%>"> <%=status%>
 								</span></td>
+								<td><%=ap.getToken()%></td>
 								<td>
 									<button type="button"
 										class="btn btn-outline-primary btn-sm view-btn"
@@ -437,6 +438,18 @@ body {
 							<span class="detail-label">Patient Name</span>
 							<div class="detail-value">
 								<%=ap.getPatientName()%>
+							</div>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Token No.</span>
+							<div class="detail-value">
+								<%=ap.getToken()%>
+							</div>
+						</div>
+						<div class="detail-item">
+							<span class="detail-label">Appointment Mode</span>
+							<div class="detail-value">
+								<%=ap.getMode()%>
 							</div>
 						</div>
 						<div class="detail-item">

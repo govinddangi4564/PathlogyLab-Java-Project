@@ -65,7 +65,7 @@ public class SendAppointmentConfirmation extends HttpServlet {
 			session.setAttribute("errorMsg", "Email sending failed");
 		}
 
-		response.sendRedirect(request.getContextPath() + "/Pages/viewAppointment.jsp");
+		response.sendRedirect(request.getContextPath() + "/viewAppointmentReport");
 	}
 
 }

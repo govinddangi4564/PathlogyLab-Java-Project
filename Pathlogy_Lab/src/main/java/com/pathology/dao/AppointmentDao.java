@@ -124,7 +124,7 @@ public class AppointmentDao {
 
 		try (Connection con = DBConnection.getConnection();
 				PreparedStatement pst = con.prepareStatement(
-						"SELECT p.patient_name,p.patient_email,p.patient_mobile,a.patient_id, a.id,a.test_name,a.appointment_date,a.time_slot,a.lab_location,a.status,a.priority FROM appointments a JOIN patients p ON p.patient_uid = a.patient_id")) {
+						"SELECT p.patient_name,p.patient_email,p.patient_mobile,a.patient_id, a.id,a.test_name,a.appointment_date,a.time_slot,a.lab_location,a.status,a.priority, a.token_no, a.booking_type FROM appointments a JOIN patients p ON p.patient_uid = a.patient_id")) {
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
@@ -135,14 +135,22 @@ public class AppointmentDao {
 				String mobile = rs.getString("patient_mobile");
 				String test = rs.getString("test_name");
 				Date apDate = rs.getDate("appointment_date");
+
 				String apTime = rs.getString("time_slot");
-				LocalTime time = LocalTime.parse(apTime);
+				LocalTime time = null;
+
+				if (apTime != null && !apTime.isEmpty()) {
+					time = LocalTime.parse(apTime);
+				}
 
 				String loc = rs.getString("lab_location");
 				String sts = rs.getString("status");
 				String priority = rs.getString("priority");
+				int token = rs.getInt("token_no");
+				String mode = rs.getString("booking_type");
 
-				list.add(new Appointment(id, pId, name, email, mobile, test, apDate, time, loc, sts, priority));
+				list.add(new Appointment(id, pId, name, email, mobile, test, apDate, time, loc, sts, priority, token,
+						mode));
 			}
 
 		} catch (SQLException e) {
@@ -158,8 +166,9 @@ public class AppointmentDao {
 				PreparedStatement pst = con
 						.prepareStatement("SELECT p.patient_name, p.patient_email, p.patient_mobile, "
 								+ "a.patient_id, a.id, a.test_name, a.appointment_date, a.time_slot, "
-								+ "a.lab_location, a.status, a.priority " + "FROM appointments a "
-								+ "JOIN patients p ON p.patient_uid = a.patient_id " + "WHERE a.id = ?")) {
+								+ "a.lab_location, a.status, a.priority, a.token_no, a.booking_type "
+								+ "FROM appointments a " + "JOIN patients p ON p.patient_uid = a.patient_id "
+								+ "WHERE a.id = ?")) {
 
 			pst.setInt(1, id);
 			ResultSet rs = pst.executeQuery();
@@ -178,8 +187,11 @@ public class AppointmentDao {
 				String loc = rs.getString("lab_location");
 				String sts = rs.getString("status");
 				String priority = rs.getString("priority");
+				Integer token = (Integer) rs.getObject("token_no");
+				String mode = rs.getString("booking_type");
 
-				ap = new Appointment(dbId, pId, name, email, mobile, test, apDate, time, loc, sts, priority);
+				ap = new Appointment(dbId, pId, name, email, mobile, test, apDate, time, loc, sts, priority, token,
+						mode);
 			}
 
 		} catch (SQLException e) {
