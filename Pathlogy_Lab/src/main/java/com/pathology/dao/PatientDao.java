@@ -128,4 +128,23 @@ public class PatientDao {
 		return list;
 	}
 
+	public List<Patient> getAllPatients() {
+		List<Patient> list = new LinkedList<Patient>();
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con.prepareStatement("SELECT * FROM patients ORDER BY patient_uid DESC")) {
+
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				list.add(new Patient(rs.getString("patient_uid"), rs.getString("patient_name"),
+						rs.getString("patient_email"), rs.getString("patient_mobile")));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 }
