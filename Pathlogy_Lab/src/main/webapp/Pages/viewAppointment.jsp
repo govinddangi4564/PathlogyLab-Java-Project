@@ -267,6 +267,10 @@ body {
 
 	<%
 	AppointmentDao dao = new AppointmentDao();
+	int total = dao.getTotalAppointment();
+	int confirmed = dao.getConfirmedAppointment();
+	int Pending = dao.getPendingAppointment();
+	int Cancelled = dao.getCancelledAppointment();
 	%>
 
 	<div class="main-content">
@@ -289,19 +293,19 @@ body {
 			<div class="summary-grid">
 				<div class="summary-card">
 					<div class="summary-label">Total Appointments</div>
-					<div class="summary-value">128</div>
+					<div class="summary-value"><%=total%></div>
 				</div>
 				<div class="summary-card">
 					<div class="summary-label">Confirmed</div>
-					<div class="summary-value">84</div>
+					<div class="summary-value"><%=confirmed%></div>
 				</div>
 				<div class="summary-card">
 					<div class="summary-label">Pending</div>
-					<div class="summary-value">31</div>
+					<div class="summary-value"><%=Pending%></div>
 				</div>
 				<div class="summary-card">
 					<div class="summary-label">Cancelled</div>
-					<div class="summary-value">13</div>
+					<div class="summary-value"><%=Cancelled%></div>
 				</div>
 			</div>
 
@@ -363,9 +367,12 @@ body {
 								statusClass = "status-confirmed";
 									} else if ("Cancelled".equalsIgnoreCase(status)) {
 								statusClass = "status-cancelled";
+									} else if ("Booked".equalsIgnoreCase(status)) {
+								status = "Booked / Not Confirmed";
 									}
 									String modalId = "appointmentModal" + ap.getId();
 							%>
+
 							<tr>
 								<td><%=count%></td>
 								<td><%=ap.getPatientName()%></td>
@@ -411,6 +418,8 @@ body {
 		statusClass = "status-confirmed";
 			} else if ("Cancelled".equalsIgnoreCase(status)) {
 		statusClass = "status-cancelled";
+			} else if ("Booked".equalsIgnoreCase(status)) {
+		status = "Booked / Not Confirmed";
 			}
 			String modalId = "appointmentModal" + ap.getId();
 	%>
@@ -512,9 +521,11 @@ body {
 						method="post" class="appointment-actions m-0">
 						<input type="hidden" name="id" value="<%=ap.getId()%>">
 						<button type="submit" name="status" value="Confirmed"
-							class="btn btn-success btn-sm action-btn">Confirm</button>
+							class="btn btn-success btn-sm action-btn">Confirm
+							Appointment</button>
 						<button type="submit" name="status" value="Cancelled"
-							class="btn btn-warning btn-sm action-btn">Cancel</button>
+							class="btn btn-warning btn-sm action-btn">Cancel
+							Appointment</button>
 					</form>
 				</div>
 			</div>

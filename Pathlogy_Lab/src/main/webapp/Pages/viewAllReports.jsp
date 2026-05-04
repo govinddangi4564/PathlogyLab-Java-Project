@@ -549,7 +549,7 @@ body {
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="../Js/admin-dashboard.js"></script>
+	<script src="<%=request.getContextPath()%>/Js/admin-dashboard.js"></script>
 
 	<%
 	} else {

@@ -45,7 +45,6 @@
 	<%
 	}
 	%>
-	%>
 
 	<div class="page-wrap">
 		<%@include file="Components/message.jsp"%>

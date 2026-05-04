@@ -63,9 +63,9 @@ public class BookAppointmentServlet extends HttpServlet {
 		}
 
 		if ("USER".equals(role)) {
-			response.sendRedirect(request.getContextPath() + "/Pages/bookAppointment.jsp");
+			response.sendRedirect(request.getContextPath() + "/Pages/bookAppointmentSelf.jsp");
 		} else {
-			response.sendRedirect(request.getContextPath() + "/Pages/User/bookAppointmentSelf.jsp");
+			response.sendRedirect(request.getContextPath() + "/Pages/User/bookAppointment.jsp");
 		}
 	}
 }

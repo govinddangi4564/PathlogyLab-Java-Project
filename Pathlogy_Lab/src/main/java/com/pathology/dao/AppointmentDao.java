@@ -216,4 +216,77 @@ public class AppointmentDao {
 		}
 		return i;
 	}
+
+	public int getTotalAppointment() {
+		int total = 0;
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con.prepareStatement("SELECT COUNT(id) AS total FROM appointments")) {
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				total = rs.getInt("total");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return total;
+	}
+
+	public int getConfirmedAppointment() {
+		int total = 0;
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con
+						.prepareStatement("SELECT COUNT(id) AS total FROM appointments WHERE status = ?")) {
+			pst.setString(1, "Confirmed");
+
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				total = rs.getInt("total");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return total;
+	}
+
+	public int getPendingAppointment() {
+		int total = 0;
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con
+						.prepareStatement("SELECT COUNT(id) AS total FROM appointments WHERE status = ?")) {
+			pst.setString(1, "Booked");
+
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				total = rs.getInt("total");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return total;
+	}
+
+	public int getCancelledAppointment() {
+		int total = 0;
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con
+						.prepareStatement("SELECT COUNT(id) AS total FROM appointments WHERE status = ?")) {
+			pst.setString(1, "Cancelled");
+
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				total = rs.getInt("total");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return total;
+	}
 }
