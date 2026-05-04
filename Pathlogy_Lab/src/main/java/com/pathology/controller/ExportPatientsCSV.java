@@ -29,13 +29,11 @@ public class ExportPatientsCSV extends HttpServlet {
 
 		HttpSession session = request.getSession(false);
 
-		// Check if user is logged in
 		if (session == null || session.getAttribute("userObj") == null) {
 			response.sendRedirect(request.getContextPath() + "/login");
 			return;
 		}
 
-		// Check user role (only ADMIN and STAFF can export)
 		String role = (String) session.getAttribute("role");
 		if (!("ADMIN".equalsIgnoreCase(role) || "STAFF".equalsIgnoreCase(role))) {
 			response.sendRedirect(request.getContextPath() + "/Pages/unauthorizedUser.jsp");
@@ -44,7 +42,6 @@ public class ExportPatientsCSV extends HttpServlet {
 
 		PrintWriter writer = null;
 		try {
-			// Fetch all patients from database
 			PatientDao patientDao = new PatientDao();
 			List<Patient> patients = patientDao.getAllPatients();
 
@@ -55,10 +52,8 @@ public class ExportPatientsCSV extends HttpServlet {
 			response.setContentType("text/csv;charset=UTF-8");
 			response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
-			// Write CSV content
 			writer = response.getWriter();
 
-			// Write CSV header
 			writer.println("Patient ID,Patient Name,Patient Email,Patient Mobile");
 
 			// Write patient data

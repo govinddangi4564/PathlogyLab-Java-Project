@@ -280,9 +280,10 @@ body {
 					<p class="page-subtitle">View, search, and manage appointment
 						bookings from one place.</p>
 				</div>
-				<button class="btn btn-primary" type="button">
-					<i class="fa-solid fa-plus me-2"></i>New Appointment
-				</button>
+
+				<a href="<%=request.getContextPath()%>/Pages/bookAppointment.jsp"
+					class="btn btn-primary"><i class="fa-solid fa-plus me-2"></i>New
+					Appointment</a>
 			</div>
 
 			<div class="summary-grid">
@@ -342,7 +343,7 @@ body {
 					<table class="table table-hover mb-0 align-middle">
 						<thead>
 							<tr>
-								<th>#</th>
+								<th>S.No.</th>
 								<th>Patient Name</th>
 								<th>Test Name</th>
 								<th>Appointment Date</th>
