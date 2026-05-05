@@ -59,7 +59,8 @@
 		</a> <a href="<%=request.getContextPath()%>/Pages/manageStaff.jsp"
 			data-admin-link="manageStaff"> <i class="fa-solid fa-users"></i>
 			Manage Staff
-		</a> <a href="<%=request.getContextPath()%>/viewAppointmentReport"
+		</a> <a
+			href="<%=request.getContextPath()%>/viewAppointmentReport?key=todayOrAfter"
 			data-admin-link="appointments"> <i class="fa-solid fa-file-lines"></i>
 			Appointments
 		</a>

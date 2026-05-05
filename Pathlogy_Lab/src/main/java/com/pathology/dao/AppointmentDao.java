@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -119,12 +120,21 @@ public class AppointmentDao {
 		return i;
 	}
 
-	public List<Appointment> viewAppointment() {
+	public List<Appointment> viewAppointment(String key) {
 		List<Appointment> list = new LinkedList<Appointment>();
 
-		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pst = con.prepareStatement(
-						"SELECT p.patient_name,p.patient_email,p.patient_mobile,a.patient_id, a.id,a.test_name,a.appointment_date,a.time_slot,a.lab_location,a.status,a.priority, a.token_no, a.booking_type FROM appointments a JOIN patients p ON p.patient_uid = a.patient_id")) {
+		String query = "";
+
+		if ("today".equals(key)) {
+			query = "SELECT p.patient_name,p.patient_email,p.patient_mobile,a.patient_id, a.id,a.test_name,a.appointment_date,a.time_slot,a.lab_location,a.status,a.priority, a.token_no, a.booking_type FROM appointments a JOIN patients p ON p.patient_uid = a.patient_id WHERE a.appointment_date = CURDATE()";
+		} else if ("todayOrAfter".equals(key)) {
+			query = "SELECT p.patient_name,p.patient_email,p.patient_mobile,a.patient_id, a.id,a.test_name,a.appointment_date,a.time_slot,a.lab_location,a.status,a.priority, a.token_no, a.booking_type FROM appointments a JOIN patients p ON p.patient_uid = a.patient_id WHERE a.appointment_date >= CURDATE()";
+		} else {
+			query = "SELECT p.patient_name,p.patient_email,p.patient_mobile,a.patient_id, a.id,a.test_name,a.appointment_date,a.time_slot,a.lab_location,a.status,a.priority, a.token_no, a.booking_type FROM appointments a JOIN patients p ON p.patient_uid = a.patient_id";
+		}
+
+		try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
+
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
@@ -182,7 +192,12 @@ public class AppointmentDao {
 				String test = rs.getString("test_name");
 				Date apDate = rs.getDate("appointment_date");
 
-				LocalTime time = rs.getTime("time_slot").toLocalTime();
+				Time sqlTime = rs.getTime("time_slot");
+				LocalTime time = null;
+
+				if (sqlTime != null) {
+					time = sqlTime.toLocalTime();
+				}
 
 				String loc = rs.getString("lab_location");
 				String sts = rs.getString("status");
@@ -288,5 +303,95 @@ public class AppointmentDao {
 			e.printStackTrace();
 		}
 		return total;
+	}
+
+	public List<Appointment> filterAppointments(String search, String type, String status, String priority,
+			String date) {
+		List<Appointment> list = new ArrayList<Appointment>();
+
+		String query = "SELECT p.patient_name,p.patient_email,p.patient_mobile,a.patient_id, a.id,a.test_name,a.appointment_date,a.time_slot,a.lab_location,a.status,a.priority, a.token_no, a.booking_type FROM appointments a JOIN patients p ON p.patient_uid = a.patient_id WHERE 1=1";
+
+		if (search != null && !search.isEmpty()) {
+			query += " AND (patient_id LIKE ? OR test_name LIKE ? OR lab_location LIKE ? OR patient_name LIKE ? OR patient_email LIKE ? OR patient_mobile LIKE ?)";
+		}
+
+		if (type != null && !type.isEmpty()) {
+			query += " AND test_name = ?";
+		}
+
+		if (status != null && !status.isEmpty()) {
+			query += " AND status = ?";
+		}
+
+		if (priority != null && !priority.isEmpty()) {
+			query += " AND priority = ?";
+		}
+
+		if (date != null && !date.isEmpty()) {
+			query += " AND appointment_date = ?";
+		}
+
+		try (Connection con = DBConnection.getConnection(); PreparedStatement pst = con.prepareStatement(query)) {
+
+			int i = 1;
+
+			if (search != null && !search.isEmpty()) {
+				pst.setString(i++, "%" + search + "%");
+				pst.setString(i++, "%" + search + "%");
+				pst.setString(i++, "%" + search + "%");
+				pst.setString(i++, "%" + search + "%");
+				pst.setString(i++, "%" + search + "%");
+				pst.setString(i++, "%" + search + "%");
+			}
+
+			if (type != null && !type.isEmpty()) {
+				pst.setString(i++, type);
+			}
+
+			if (status != null && !status.isEmpty()) {
+				pst.setString(i++, status);
+			}
+
+			if (priority != null && !priority.isEmpty()) {
+				pst.setString(i++, priority);
+			}
+
+			if (date != null && !date.isEmpty()) {
+				pst.setString(i++, date);
+			}
+
+			ResultSet rs = pst.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String pId = rs.getString("patient_id");
+				String name = rs.getString("patient_name");
+				String email = rs.getString("patient_email");
+				String mobile = rs.getString("patient_mobile");
+				String test = rs.getString("test_name");
+				Date apDate = rs.getDate("appointment_date");
+
+				String apTime = rs.getString("time_slot");
+				LocalTime time = null;
+
+				if (apTime != null && !apTime.isEmpty()) {
+					time = LocalTime.parse(apTime);
+				}
+
+				String loc = rs.getString("lab_location");
+				String sts = rs.getString("status");
+				String priority1 = rs.getString("priority");
+				int token = rs.getInt("token_no");
+				String mode = rs.getString("booking_type");
+
+				list.add(new Appointment(id, pId, name, email, mobile, test, apDate, time, loc, sts, priority1, token,
+						mode));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return list;
 	}
 }

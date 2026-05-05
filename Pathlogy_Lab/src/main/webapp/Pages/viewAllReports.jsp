@@ -278,6 +278,7 @@ body {
 <body data-admin-page="reports">
 
 	<%@ include file="Components/auth.jsp"%>
+	<%@ include file="Components/loader.jsp"%>
 
 	<%
 	String role = (String) mySession.getAttribute("role");

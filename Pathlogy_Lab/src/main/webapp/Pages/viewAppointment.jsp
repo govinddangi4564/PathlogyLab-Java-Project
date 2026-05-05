@@ -243,6 +243,7 @@ body {
 
 <body data-admin-page="appointments">
 	<%@ include file="Components/auth.jsp"%>
+	<%@ include file="Components/loader.jsp"%>
 
 	<%
 	String role = (String) mySession.getAttribute("role");
@@ -285,9 +286,29 @@ body {
 						bookings from one place.</p>
 				</div>
 
-				<a href="<%=request.getContextPath()%>/Pages/bookAppointment.jsp"
-					class="btn btn-primary"><i class="fa-solid fa-plus me-2"></i>New
-					Appointment</a>
+				<div class="d-flex gap-2">
+
+					<!-- All Appointments -->
+					<a
+						href="<%=request.getContextPath()%>/viewAppointmentReport"
+						class="btn btn-secondary"> <i class="fa-solid fa-eye me-2"></i>All
+						Appointments
+					</a>
+
+					<!-- Today's Appointments -->
+					<a
+						href="<%=request.getContextPath()%>/viewAppointmentReport?key=today"
+						class="btn btn-secondary"> <i class="fa-solid fa-eye me-2"></i>Today's
+						Appointments
+					</a>
+
+					<!-- New Appointment -->
+					<a href="<%=request.getContextPath()%>/Pages/bookAppointment.jsp"
+						class="btn btn-primary"> <i class="fa-solid fa-plus me-2"></i>New
+						Appointment
+					</a>
+
+				</div>
 			</div>
 
 			<div class="summary-grid">
@@ -309,104 +330,129 @@ body {
 				</div>
 			</div>
 
-			<div class="panel">
-				<div class="row g-2 filter-row mb-3">
-					<div class="col-12 col-md-4">
-						<input type="text" class="form-control"
-							placeholder="Search by patient, email, or mobile">
-					</div>
-					<div class="col-6 col-md-2">
-						<select class="form-select">
-							<option selected>All Tests</option>
-							<option>Blood Test</option>
-							<option>X-Ray</option>
-							<option>MRI</option>
-							<option>CT Scan</option>
-							<option>ECG</option>
-						</select>
-					</div>
-					<div class="col-6 col-md-2">
-						<select class="form-select">
-							<option selected>All Status</option>
-							<option>Confirmed</option>
-							<option>Pending</option>
-							<option>Cancelled</option>
-						</select>
-					</div>
-					<div class="col-6 col-md-2">
-						<input type="date" class="form-control">
-					</div>
-					<div class="col-6 col-md-2 d-grid">
-						<button class="btn btn-outline-secondary" type="button">Apply
-							Filter</button>
+			<form action="<%=request.getContextPath()%>/filterAppointments"
+				method="get">
+				<div class="panel">
+					<div class="row g-2 filter-row mb-3">
+
+						<!-- Search -->
+						<div class="col-12 col-md-3">
+							<input type="text" name="search" class="form-control"
+								placeholder="Search by patient, email, or mobile">
+						</div>
+
+						<!-- Test Type -->
+						<div class="col-6 col-md-2">
+							<select name="type" class="form-select">
+								<option value="" selected>All Tests</option>
+								<option value="Blood Test">Blood Test</option>
+								<option value="X-Ray">X-Ray</option>
+								<option value="MRI">MRI</option>
+								<option value="CT Scan">CT Scan</option>
+								<option value="ECG">ECG</option>
+							</select>
+						</div>
+
+						<!-- Status -->
+						<div class="col-6 col-md-2">
+							<select name="status" class="form-select">
+								<option value="" selected>All Status</option>
+								<option value="Booked">Pending</option>
+								<option value="Confirmed">Confirmed</option>
+								<option value="Completed">Completed</option>
+								<option value="cancelled">Cancelled</option>
+							</select>
+						</div>
+
+						<!-- Priority -->
+						<div class="col-6 col-md-1">
+							<select name="Priority" class="form-select">
+								<option value="" selected>All</option>
+								<option value="Normal">Normal</option>
+								<option value="Urgent">Urgent</option>
+							</select>
+						</div>
+
+						<!-- Date -->
+						<div class="col-6 col-md-2">
+							<input type="date" name="date" class="form-control">
+						</div>
+
+						<!-- Button -->
+						<div class="col-6 col-md-2 d-grid">
+							<button class="btn btn-outline-secondary" type="submit">
+								Apply Filter</button>
+						</div>
+
 					</div>
 				</div>
+			</form>
 
-				<div class="section-label">Appointments</div>
-				<div class="table-wrap table-responsive">
-					<table class="table table-hover mb-0 align-middle">
-						<thead>
-							<tr>
-								<th>S.No.</th>
-								<th>Patient Name</th>
-								<th>Test Name</th>
-								<th>Appointment Date</th>
-								<th>Status</th>
-								<th>Token no.</th>
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<%
-							int count = 1;
-							if (list != null && !list.isEmpty()) {
-								for (Appointment ap : list) {
-									String status = ap.getStatus();
-									String statusClass = "status-pending";
-									if ("Confirmed".equalsIgnoreCase(status)) {
-								statusClass = "status-confirmed";
-									} else if ("Cancelled".equalsIgnoreCase(status)) {
-								statusClass = "status-cancelled";
-									} else if ("Booked".equalsIgnoreCase(status)) {
-								status = "Booked / Not Confirmed";
-									}
-									String modalId = "appointmentModal" + ap.getId();
-							%>
+			<div class="section-label">Appointments</div>
+			<div class="table-wrap table-responsive">
+				<table class="table table-hover mb-0 align-middle">
+					<thead>
+						<tr>
+							<th>S.No.</th>
+							<th>Patient Name</th>
+							<th>Test Name</th>
+							<th>Appointment Date</th>
+							<th>Status</th>
+							<th>Token no.</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%
+						int count = 1;
+						if (list != null && !list.isEmpty()) {
+							for (Appointment ap : list) {
+								String status = ap.getStatus();
+								String statusClass = "status-pending";
+								if ("Confirmed".equalsIgnoreCase(status)) {
+							statusClass = "status-confirmed";
+								} else if ("Cancelled".equalsIgnoreCase(status)) {
+							statusClass = "status-cancelled";
+								} else if ("Booked".equalsIgnoreCase(status)) {
+							status = "Booked / Not Confirmed";
+								}
+								String modalId = "appointmentModal" + ap.getId();
+						%>
 
-							<tr>
-								<td><%=count%></td>
-								<td><%=ap.getPatientName()%></td>
-								<td><%=ap.getTestName()%></td>
-								<td><%=ap.getAppointmentDate()%></td>
-								<td><span class="status-pill <%=statusClass%>"> <%=status%>
-								</span></td>
-								<td><%=ap.getToken()%></td>
-								<td>
-									<button type="button"
-										class="btn btn-outline-primary btn-sm view-btn"
-										data-bs-toggle="modal" data-bs-target="#<%=modalId%>">
-										<i class="fa-solid fa-eye me-1"></i>View
-									</button>
-								</td>
-							</tr>
-							<%
-							count++;
-							}
-							} else {
-							%>
-							<tr>
-								<td colspan="6" class="text-center text-muted py-4">No
-									appointments found.</td>
-							</tr>
-							<%
-							}
-							%>
-						</tbody>
-					</table>
-				</div>
-
+						<tr>
+							<td><%=count%></td>
+							<td><%=ap.getPatientName()%></td>
+							<td><%=ap.getTestName()%></td>
+							<td><%=ap.getAppointmentDate()%></td>
+							<td><span class="status-pill <%=statusClass%>"> <%=status%>
+							</span></td>
+							<td><%=ap.getToken()%></td>
+							<td>
+								<button type="button"
+									class="btn btn-outline-primary btn-sm view-btn"
+									data-bs-toggle="modal" data-bs-target="#<%=modalId%>">
+									<i class="fa-solid fa-eye me-1"></i>View
+								</button>
+							</td>
+						</tr>
+						<%
+						count++;
+						}
+						} else {
+						%>
+						<tr>
+							<td colspan="6" class="text-center text-muted py-4">No
+								appointments found.</td>
+						</tr>
+						<%
+						}
+						%>
+					</tbody>
+				</table>
 			</div>
+
 		</div>
+	</div>
 	</div>
 
 	<%

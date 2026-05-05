@@ -80,8 +80,10 @@ public class ViewReports extends HttpServlet {
 
 		} else if (path.equals("/viewAppointmentReport")) {
 
+			String key = request.getParameter("key");
+			
 			AppointmentDao dao = new AppointmentDao();
-			List<Appointment> list = dao.viewAppointment();
+			List<Appointment> list = dao.viewAppointment(key);
 
 			request.setAttribute("appointmentList", list);
 			request.getRequestDispatcher("Pages/viewAppointment.jsp").forward(request, response);
