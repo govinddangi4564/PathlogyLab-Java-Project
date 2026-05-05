@@ -40,16 +40,13 @@
 
 	<div class="main-content">
 
-		<!-- Heading -->
 		<div class="mb-4">
 			<h2 class="fw-bold">Manage Appointments</h2>
 			<p class="text-muted">View Appointments and Book Appointment</p>
 		</div>
 
-		<!-- REPORT CARDS -->
 		<div class="row g-4">
 
-			<!--Add Patients -->
 			<div class="col-md-6">
 				<div class="card shadow border-0 card-hover h-100">
 					<div class="card-body text-center">
@@ -70,7 +67,6 @@
 				</div>
 			</div>
 
-			<!-- View Patients -->
 			<div class="col-md-6">
 				<div class="card shadow border-0 card-hover h-100">
 					<div class="card-body text-center">
@@ -81,7 +77,25 @@
 						<p class="text-muted">Provide patient details manually (Name,
 							Email, Phone).</p>
 
-						<a href="${pageContext.request.contextPath}/viewPatients"
+						<a href="<%=request.getContextPath()%>/Pages/bookAppointment.jsp"
+							class="btn btn-primary px-4"> <i class="bi bi-plus"></i> View
+							Patients
+						</a>
+
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-md-6">
+				<div class="card shadow border-0 card-hover h-100">
+					<div class="card-body text-center">
+
+						<i class="bi bi-people-fill fs-1 text-primary"></i>
+
+						<h4 class="mt-3">View My Appointment</h4>
+						<p class="text-muted">View Appointment, Change time-slot, Date, Location and Cancel Appointment.</p>
+
+						<a href="<%=request.getContextPath()%>/viewMyAppointment"
 							class="btn btn-primary px-4"> <i class="bi bi-eye"></i> View
 							Patients
 						</a>

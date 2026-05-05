@@ -210,6 +210,23 @@ public class ReportDao {
 		return count;
 	}
 
+	public int todayUploadedReports() {
+		int count = 0;
+
+		try (Connection con = DBConnection.getConnection();
+				PreparedStatement pst = con.prepareStatement(
+						"SELECT COUNT(id) AS total FROM reports WHERE DATE(upload_date) = CURDATE()")) {
+
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt("total");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+
 	public List<Report> filterReport(String search, String type, String status, String sort) {
 
 		List<Report> list = new ArrayList<Report>();

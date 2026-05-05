@@ -318,6 +318,7 @@ to {
 	int patient = pdao.totalPatients();
 	int report = rdao.totalReports();
 	int pendingReport = rdao.totalPendingReports();
+	int todayUpload = rdao.todayUploadedReports();
 	%>
 
 
@@ -372,7 +373,7 @@ to {
 						<i class="fa-solid fa-cloud-arrow-up"></i>
 					</div>
 					<p class="label mb-0">Today's Uploads</p>
-					<p class="value">0</p>
+					<p class="value"><%=todayUpload%></p>
 					<div class="meta">12 pending review</div>
 				</div>
 				<div class="stat-card card-pending">

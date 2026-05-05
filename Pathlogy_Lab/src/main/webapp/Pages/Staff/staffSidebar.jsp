@@ -54,6 +54,10 @@
 			href="<%=request.getContextPath()%>/Pages/managePatients.jsp"
 			data-staff-link="patients"> <i class="fa-solid fa-users"></i>
 			Patients
+		</a> <a
+			href="<%=request.getContextPath()%>/viewAppointmentReport?key=todayOrAfter"
+			data-admin-link="appointments"> <i class="fa-solid fa-file-lines"></i>
+			Appointments
 		</a> <a href="<%=request.getContextPath()%>/Pages/changePassword.jsp"
 			data-staff-link="password"> <i class="fa-solid fa-key"></i>
 			Change Password

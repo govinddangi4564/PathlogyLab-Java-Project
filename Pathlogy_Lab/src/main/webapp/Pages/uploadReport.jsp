@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Upload Report | Admin Panel</title>
+<title>Upload Report | Pathology Lab</title>
 
 <!-- Google Fonts -->
 <link
@@ -232,7 +232,19 @@ to {
 	<%
 	String role = (String) mySession.getAttribute("role");
 
-	if ("ADMIN".equals(role)) {
+	if ("ADMIN".equalsIgnoreCase(role) || "STAFF".equalsIgnoreCase(role)) {
+	%>
+
+	<%
+	if ("STAFF".equals(role)) {
+	%>
+	<jsp:include page="Staff/staffSidebar.jsp" />
+	<%
+	} else if ("ADMIN".equals(role)) {
+	%>
+	<jsp:include page="adminSidebar.jsp" />
+	<%
+	}
 	%>
 	<jsp:include page="adminSidebar.jsp" />
 

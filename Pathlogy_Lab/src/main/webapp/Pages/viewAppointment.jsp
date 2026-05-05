@@ -213,6 +213,18 @@ body {
 	border-color: #fecdd3;
 }
 
+.mode-offline {
+	background: #fff7ed;
+	color: #9a3412;
+	border: 1px solid #fdba74;
+}
+
+.mode-online {
+	background: #ecfdf5;
+	color: #065f46;
+	border: 1px solid #6ee7b7;
+}
+
 .action-btn {
 	height: 32px;
 	min-width: 86px;
@@ -289,8 +301,7 @@ body {
 				<div class="d-flex gap-2">
 
 					<!-- All Appointments -->
-					<a
-						href="<%=request.getContextPath()%>/viewAppointmentReport"
+					<a href="<%=request.getContextPath()%>/viewAppointmentReport"
 						class="btn btn-secondary"> <i class="fa-solid fa-eye me-2"></i>All
 						Appointments
 					</a>
@@ -398,6 +409,7 @@ body {
 							<th>Test Name</th>
 							<th>Appointment Date</th>
 							<th>Status</th>
+							<th>Appointment Mode</th>
 							<th>Token no.</th>
 							<th>Action</th>
 						</tr>
@@ -407,6 +419,9 @@ body {
 						int count = 1;
 						if (list != null && !list.isEmpty()) {
 							for (Appointment ap : list) {
+								String mode = ap.getMode();
+								String modeClass = "";
+
 								String status = ap.getStatus();
 								String statusClass = "status-pending";
 								if ("Confirmed".equalsIgnoreCase(status)) {
@@ -417,6 +432,12 @@ body {
 							status = "Booked / Not Confirmed";
 								}
 								String modalId = "appointmentModal" + ap.getId();
+
+								if ("Offline".equalsIgnoreCase(mode)) {
+							modeClass = "mode-offline";
+								} else if ("Online".equalsIgnoreCase(mode)) {
+							modeClass = "mode-online";
+								}
 						%>
 
 						<tr>
@@ -425,6 +446,8 @@ body {
 							<td><%=ap.getTestName()%></td>
 							<td><%=ap.getAppointmentDate()%></td>
 							<td><span class="status-pill <%=statusClass%>"> <%=status%>
+							</span></td>
+							<td><span class="status-pill <%=modeClass%>"> <%=ap.getMode()%>
 							</span></td>
 							<td><%=ap.getToken()%></td>
 							<td>
