@@ -259,9 +259,17 @@ body {
 		<%@ include file="Components/message.jsp"%>
 
 		<div class="dashboard-header">
-			<h2 class="page-title">Patient Reports Overview</h2>
-			<p class="page-subtitle">Track, download, and review all patient
-				pathology reports.</p>
+			<div class="d-flex justify-content-between align-items-start">
+				<div>
+					<h2 class="page-title">Patient Reports Overview</h2>
+					<p class="page-subtitle">Track, download, and review all
+						patient pathology reports.</p>
+				</div>
+				<button onclick="history.back()"
+					class="btn btn-outline-secondary btn-sm">
+					<i class="fas fa-arrow-left me-2"></i>Back
+				</button>
+			</div>
 		</div>
 
 		<div class="panel">
@@ -345,7 +353,8 @@ body {
 								href="<%=request.getContextPath()%>/viewReport?pId=<%=p.getPatientId()%>"
 								class="btn btn-success btn-sm"> View Reports </a> <%
  if ("ADMIN".equalsIgnoreCase(role)) {
- %> <a href="deletePatient?pId=<%=p.getPatientId()%>"
+ %> <a
+								href="deletePatient?pId=<%=p.getPatientId()%>"
 								class="btn btn-outline-danger btn-sm"
 								onclick="return confirm('Are you sure you want to delete this patient?');">
 									Delete Patient </a> <%
@@ -386,15 +395,15 @@ body {
 	</div>
 
 	<script>
-																	setTimeout(function () {
-																		let alert = document.getElementById("alertMsg");
-																		if (alert) {
-																			alert.classList.remove("show");
-																			alert.classList.add("fade");
-																			setTimeout(() => alert.remove(), 500);
-																		}
-																	}, 3000);
-																</script>
+																		setTimeout(function () {
+																			let alert = document.getElementById("alertMsg");
+																			if (alert) {
+																				alert.classList.remove("show");
+																				alert.classList.add("fade");
+																				setTimeout(() => alert.remove(), 500);
+																			}
+																		}, 3000);
+																	</script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

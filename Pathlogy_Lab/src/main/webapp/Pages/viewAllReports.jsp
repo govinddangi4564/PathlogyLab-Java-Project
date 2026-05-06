@@ -282,7 +282,6 @@ body {
 
 	<%
 	String role = (String) mySession.getAttribute("role");
-
 	if ("ADMIN".equalsIgnoreCase(role) || "STAFF".equalsIgnoreCase(role)) {
 	%>
 
@@ -315,9 +314,17 @@ body {
 		<%@ include file="Components/message.jsp"%>
 
 		<div class="page-header">
-			<h2 class="page-title">All Reports</h2>
-			<p class="page-subtitle">Review uploaded records, check statuses,
-				and take admin actions.</p>
+			<div class="d-flex justify-content-between align-items-start">
+				<div>
+					<h2 class="page-title">All Reports</h2>
+					<p class="page-subtitle">Review uploaded records, check
+						statuses, and take admin actions.</p>
+				</div>
+				<button onclick="history.back()"
+					class="btn btn-outline-secondary btn-sm">
+					<i class="fas fa-arrow-left me-2"></i>Back
+				</button>
+			</div>
 		</div>
 
 		<div class="summary-grid row g-3 justify-content-center">
@@ -452,7 +459,8 @@ body {
 								} else if ("Delivered".equalsIgnoreCase(status)) {
 									badgeClass = "bg-success";
 								}
-								%> <span class="badge rounded-pill <%=badgeClass%>"> <%=status%>
+								%> <span
+								class="badge rounded-pill <%=badgeClass%>"> <%=status%>
 							</span>
 							</td>
 
@@ -520,13 +528,14 @@ body {
 
 						<%
 						if (totalReport < 15) {
-
 						} else {
 							for (int i = 0, j = 1; i <= totalReport; i = i + 15, j++) {
 						%>
 
 						<li class="page-item active"><a class="page-link"
-							href="<%=request.getContextPath()%>/viewAllReportsByOffset?offset=<%=i%>"><%=j%></a></li>
+							href="<%=request.getContextPath()%>/viewAllReportsByOffset?offset=<%=i%>">
+								<%=j%>
+						</a></li>
 						<%
 						}
 						}
@@ -538,15 +547,15 @@ body {
 	</div>
 
 	<script>
-														setTimeout(function () {
-															let alert = document.getElementById("alertMsg");
-															if (alert) {
-																alert.classList.remove("show");
-																alert.classList.add("fade");
-																setTimeout(() => alert.remove(), 500);
-															}
-														}, 3000); // 3 seconds
-													</script>
+																setTimeout(function () {
+																	let alert = document.getElementById("alertMsg");
+																	if (alert) {
+																		alert.classList.remove("show");
+																		alert.classList.add("fade");
+																		setTimeout(() => alert.remove(), 500);
+																	}
+																}, 3000); // 3 seconds
+															</script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

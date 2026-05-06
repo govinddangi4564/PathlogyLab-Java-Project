@@ -22,7 +22,8 @@
 	rel="stylesheet">
 
 
-<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/Css/app-theme.css">
+<link rel="stylesheet" type="text/css"
+	href="<%=request.getContextPath()%>/Css/app-theme.css">
 </head>
 
 <body data-user-page="dashboard">
@@ -32,11 +33,19 @@
 	<div class="main-content">
 		<%@ include file="../Components/message.jsp"%>
 		<div class="dashboard-header">
-			<h2>
-				Welcome Back,
-				<%=u.getName()%>
-			</h2>
-			<p>View and manage your personal details and medical reports.</p>
+			<div class="d-flex justify-content-between align-items-start">
+				<div>
+					<h2>
+						Welcome Back,
+						<%=u.getName()%>
+					</h2>
+					<p>View and manage your personal details and medical reports.</p>
+				</div>
+				<button onclick="history.back()"
+					class="btn btn-outline-secondary btn-sm">
+					<i class="fas fa-arrow-left me-2"></i>Back
+				</button>
+			</div>
 		</div>
 
 		<div class="row">

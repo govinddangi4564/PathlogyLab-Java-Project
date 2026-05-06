@@ -194,7 +194,6 @@ to {
 
 	<%
 	String role = (String) mySession.getAttribute("role");
-
 	if ("ADMIN".equals(role)) {
 	%>
 	<jsp:include page="adminSidebar.jsp" />
@@ -209,6 +208,12 @@ to {
 		<div class="staff-container">
 			<div class="glass-card">
 				<div class="header-section">
+					<div class="d-flex justify-content-between align-items-start mb-3">
+						<button onclick="history.back()"
+							class="btn btn-outline-secondary btn-sm">
+							<i class="fas fa-arrow-left me-2"></i>Back
+						</button>
+					</div>
 					<div class="icon-circle">
 						<i class="fa-solid fa-user-plus"></i>
 					</div>

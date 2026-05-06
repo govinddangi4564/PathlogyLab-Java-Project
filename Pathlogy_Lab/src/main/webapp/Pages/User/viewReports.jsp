@@ -7,6 +7,7 @@
 
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>View Reports | Admin Panel</title>
 
 <link
@@ -73,6 +74,10 @@ body {
 	border-radius: 10px;
 }
 
+.filter-row .btn {
+	border-radius: 12px;
+}
+
 .table thead th {
 	background: #0f172a;
 	color: #fff;
@@ -118,6 +123,82 @@ body {
 	background-color: #d4edda;
 	color: #155724;
 }
+
+.table-wrap {
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+.table-wrap .table {
+	min-width: 760px;
+}
+
+@media ( max-width : 991px) {
+	.main-content {
+		padding: 14px;
+	}
+	.page-title {
+		font-size: 1.15rem;
+		margin-bottom: 2px;
+	}
+	.page-subtitle {
+		font-size: 0.82rem;
+		margin-bottom: 10px;
+	}
+	.panel {
+		padding: 10px;
+		border-radius: 12px;
+	}
+	.summary-grid {
+		grid-template-columns: 1fr;
+		gap: 8px;
+		margin-bottom: 12px;
+	}
+	.summary-box {
+		padding: 10px;
+		border-radius: 10px;
+	}
+	.summary-box .title {
+		font-size: 0.75rem;
+	}
+	.summary-box .count {
+		font-size: 1.05rem;
+	}
+	#reportFilterRow {
+		--bs-gutter-y: 0.55rem;
+		--bs-gutter-x: 0.55rem;
+		margin-bottom: 6px !important;
+	}
+	#reportFilterRow .form-control, #reportFilterRow .form-select,
+		#reportFilterRow .btn {
+		padding-top: 0.5rem;
+		padding-bottom: 0.5rem;
+		font-size: 0.95rem;
+	}
+	#reportFilterRow .search-col {
+		width: 100%;
+	}
+	#reportFilterRow .filter-col {
+		width: 50%;
+	}
+	#reportFilterRow .filter-btn-col {
+		width: 50%;
+	}
+	#reportFilterRow .filter-btn-col .btn {
+		width: 100%;
+		font-weight: 600;
+	}
+	#reportFilterRow+.table-wrap {
+		margin-top: 0 !important;
+	}
+	.table {
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+	}
+	.table-wrap .table {
+		min-width: 700px;
+	}
+}
 </style>
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/Css/app-theme.css">
@@ -133,9 +214,17 @@ body {
 
 
 	<div class="main-content">
-		<h2 class="page-title">All Reports</h2>
-		<p class="page-subtitle">Review uploaded records, check statuses,
-			and download Reports.</p>
+		<div class="d-flex justify-content-between align-items-start mb-3">
+			<div>
+				<h2 class="page-title">All Reports</h2>
+				<p class="page-subtitle">Review uploaded records, check
+					statuses, and download Reports.</p>
+			</div>
+			<button onclick="history.back()"
+				class="btn btn-outline-secondary btn-sm">
+				<i class="fas fa-arrow-left me-2"></i>Back
+			</button>
+		</div>
 
 		<div class="summary-grid">
 			<div class="summary-box">
@@ -145,89 +234,90 @@ body {
 		</div>
 
 		<div class="panel">
-			<div class="row g-2 filter-row mb-3">
-				<div class="col-md-5">
+			<div class="row g-2 filter-row mb-3" id="reportFilterRow">
+				<div class="col-md-5 search-col">
 					<input type="text" id="searchInput" class="form-control"
-						placeholder="Search by patient ID, email, or mobile">
+						placeholder="Search by patient, email, or mobile">
 				</div>
-				<div class="col-md-3">
+				<div class="col-md-3 filter-col">
 					<select class="form-select">
-						<option selected>All Types</option>
+						<option selected>All Tests</option>
 						<option>Blood Test</option>
 						<option>X-Ray</option>
 						<option>MRI</option>
 					</select>
 				</div>
-				<div class="col-md-2">
+				<div class="col-md-2 filter-col">
 					<select class="form-select">
 						<option selected>All Status</option>
 						<option>Published</option>
 						<option>Pending</option>
 					</select>
 				</div>
-				<div class="col-md-2 d-grid">
-					<button class="btn btn-outline-secondary">Filter</button>
+				<div class="col-md-2 d-grid filter-btn-col">
+					<button class="btn btn-outline-secondary">Apply Filter</button>
 				</div>
 			</div>
 
-			<table class="table table-hover align-middle mb-0">
-				<thead>
-					<tr>
-						<th>S.No</th>
-						<th>Report Name</th>
-						<th>Date</th>
-						<th>Status</th>
-						<th>Action</th>
-					</tr>
-				</thead>
+			<div class="table-wrap">
+				<table class="table table-hover align-middle mb-0">
+					<thead>
+						<tr>
+							<th>S.No</th>
+							<th>Report Name</th>
+							<th>Date</th>
+							<th>Status</th>
+							<th>Action</th>
+						</tr>
+					</thead>
 
-				<%
-				int count = 1;
-				if (list != null) {
-					for (Report r : list) {
-				%>
+					<%
+					int count = 1;
+					if (list != null) {
+						for (Report r : list) {
+					%>
 
-				<%
-				String status = r.getStatus();
-				String displayText;
-				String badgeClass = "bg-secondary";
+					<%
+					String status = r.getStatus();
+					String displayText;
+					String badgeClass = "bg-secondary";
+					switch (status != null ? status.toLowerCase() : "") {
+						case "pending" :
+							displayText = "Processing";
+							badgeClass = "bg-warning text-dark";
+							break;
+						case "completed" :
+							displayText = "Ready";
+							badgeClass = "bg-primary";
+							break;
+						case "delivered" :
+							displayText = "Delivered";
+							badgeClass = "bg-success";
+							break;
+						default :
+							displayText = "Unknown";
+					}
+					%>
+					<tbody id="reportTable">
+						<tr>
+							<td><%=count++%></td>
+							<td><%=r.getReportName()%></td>
+							<td><%=r.getReportDate()%></td>
+							<td><span class="badge <%=badgeClass%>"> <%=displayText%>
+							</span></td>
 
-				switch (status != null ? status.toLowerCase() : "") {
-					case "pending" :
-						displayText = "Processing";
-						badgeClass = "bg-warning text-dark";
-						break;
-					case "completed" :
-						displayText = "Ready";
-						badgeClass = "bg-primary";
-						break;
-					case "delivered" :
-						displayText = "Delivered";
-						badgeClass = "bg-success";
-						break;
-					default :
-						displayText = "Unknown";
-				}
-				%>
-				<tbody id="reportTable">
-					<tr>
-						<td><%=count++%></td>
-						<td><%=r.getReportName()%></td>
-						<td><%=r.getReportDate()%></td>
-						<td><span class="badge <%=badgeClass%>"> <%=displayText%>
-						</span></td>
+							<td><a href="downloadReport?file=/<%=r.getReportPath()%>"
+								class="btn btn-success btn-sm"> Download </a></td>
+						</tr>
+					</tbody>
 
-						<td><a href="downloadReport?file=/<%=r.getReportPath()%>"
-							class="btn btn-success btn-sm"> Download </a></td>
-					</tr>
-				</tbody>
+					<%
+					}
+					}
+					%>
 
-				<%
-				}
-				}
-				%>
-
-			</table>
+				</table>
+			</div>
 		</div>
 	</div>
 

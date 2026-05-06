@@ -42,7 +42,13 @@
 
 		<!-- Heading -->
 		<div class="mb-4">
-			<h2 class="fw-bold">Manage Staff</h2>
+			<div class="d-flex justify-content-between align-items-center mb-3">
+				<h2 class="fw-bold mb-0">Manage Staff</h2>
+				<button onclick="history.back()"
+					class="btn btn-outline-secondary btn-sm">
+					<i class="fas fa-arrow-left me-2"></i>Back
+				</button>
+			</div>
 			<p class="text-muted">View Staff and Add Staff</p>
 		</div>
 

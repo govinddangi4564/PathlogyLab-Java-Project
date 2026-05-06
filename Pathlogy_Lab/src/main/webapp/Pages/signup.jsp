@@ -133,7 +133,8 @@ h1, h2, h3, h4, h5 {
 
 							<%@ include file="Components/message.jsp"%>
 
-							<form method="post" action="<%=request.getContextPath()%>/sendOtp">
+							<form method="post"
+								action="<%=request.getContextPath()%>/sendOtp">
 								<div class="mb-3">
 									<label class="form-label" for="fullName">Full Name</label> <input
 										type="text" class="form-control" id="fullName" name="fullName"
@@ -154,8 +155,8 @@ h1, h2, h3, h4, h5 {
 										type="password" class="form-control" id="password"
 										name="password" placeholder="Create password" required>
 								</div>
-								<input type="hidden" name="role" value="USER">
-								<input type="hidden" name="work" value="signup">
+								<input type="hidden" name="role" value="USER"> <input
+									type="hidden" name="work" value="signup">
 
 								<button class="btn btn-brand w-100" type="submit">Sign
 									Up</button>

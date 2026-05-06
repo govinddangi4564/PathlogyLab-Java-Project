@@ -1,12 +1,5 @@
 package com.pathology.controller;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -18,6 +11,12 @@ import com.pathology.model.Appointment;
 import com.pathology.model.Patient;
 import com.pathology.model.Report;
 import com.pathology.model.User;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns = { "/viewPatients", "/viewAllPatientByOffset", "/viewAllReports", "/viewReport",
 		"/viewAllReportsByOffset", "/viewStaff", "/viewAppointmentReport", "/viewMyAppointment" })
@@ -91,11 +90,15 @@ public class ViewReports extends HttpServlet {
 			request.getRequestDispatcher("Pages/viewAppointment.jsp").forward(request, response);
 
 		} else if (path.equals("/viewMyAppointment")) {
-			
-			int id = Integer.parseInt(request.getParameter("id"));
+
+			String patientId = request.getParameter("pId");
+			if (patientId == null || patientId.trim().isEmpty()) {
+				response.sendRedirect(request.getContextPath() + "/Pages/User/manageAppointments.jsp");
+				return;
+			}
 
 			AppointmentDao dao = new AppointmentDao();
-			List<Appointment> list = dao.myAppointment(id);
+			List<Appointment> list = dao.myAppointment(patientId);
 
 			request.setAttribute("myAppointment", list);
 			request.getRequestDispatcher("Pages/User/myAppointment.jsp").forward(request, response);

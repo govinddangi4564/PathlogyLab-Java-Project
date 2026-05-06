@@ -297,6 +297,10 @@ body {
 					<p class="page-subtitle">View, search, and manage appointment
 						bookings from one place.</p>
 				</div>
+				<button onclick="history.back()"
+					class="btn btn-outline-secondary btn-sm">
+					<i class="fas fa-arrow-left me-2"></i>Back
+				</button>
 
 				<div class="d-flex gap-2">
 
@@ -325,19 +329,27 @@ body {
 			<div class="summary-grid">
 				<div class="summary-card">
 					<div class="summary-label">Total Appointments</div>
-					<div class="summary-value"><%=total%></div>
+					<div class="summary-value">
+						<%=total%>
+					</div>
 				</div>
 				<div class="summary-card">
 					<div class="summary-label">Confirmed</div>
-					<div class="summary-value"><%=confirmed%></div>
+					<div class="summary-value">
+						<%=confirmed%>
+					</div>
 				</div>
 				<div class="summary-card">
 					<div class="summary-label">Pending</div>
-					<div class="summary-value"><%=Pending%></div>
+					<div class="summary-value">
+						<%=Pending%>
+					</div>
 				</div>
 				<div class="summary-card">
 					<div class="summary-label">Cancelled</div>
-					<div class="summary-value"><%=Cancelled%></div>
+					<div class="summary-value">
+						<%=Cancelled%>
+					</div>
 				</div>
 			</div>
 
@@ -421,7 +433,6 @@ body {
 							for (Appointment ap : list) {
 								String mode = ap.getMode();
 								String modeClass = "";
-
 								String status = ap.getStatus();
 								String statusClass = "status-pending";
 								if ("Confirmed".equalsIgnoreCase(status)) {
@@ -432,7 +443,6 @@ body {
 							status = "Booked / Not Confirmed";
 								}
 								String modalId = "appointmentModal" + ap.getId();
-
 								if ("Offline".equalsIgnoreCase(mode)) {
 							modeClass = "mode-offline";
 								} else if ("Online".equalsIgnoreCase(mode)) {

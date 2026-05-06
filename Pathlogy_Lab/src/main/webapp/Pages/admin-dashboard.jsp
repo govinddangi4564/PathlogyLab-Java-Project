@@ -307,7 +307,6 @@ to {
 
 	<%
 	String role = (String) mySession.getAttribute("role");
-
 	if ("ADMIN".equals(role)) {
 	%>
 	<jsp:include page="adminSidebar.jsp" />
@@ -328,6 +327,11 @@ to {
 			<%@ include file="Components/message.jsp"%>
 
 			<div class="hero">
+				<button onclick="history.back()"
+					class="btn btn-light btn-sm position-absolute"
+					style="top: 20px; right: 20px;">
+					<i class="fas fa-arrow-left me-2"></i>Back
+				</button>
 				<div>
 					<div class="badge-chip">
 						<i class="fa-solid fa-shield-halved"></i> Admin Control Panel
@@ -373,7 +377,9 @@ to {
 						<i class="fa-solid fa-cloud-arrow-up"></i>
 					</div>
 					<p class="label mb-0">Today's Uploads</p>
-					<p class="value"><%=todayUpload%></p>
+					<p class="value">
+						<%=todayUpload%>
+					</p>
 					<div class="meta">12 pending review</div>
 				</div>
 				<div class="stat-card card-pending">

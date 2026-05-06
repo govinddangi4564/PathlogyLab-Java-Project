@@ -215,7 +215,6 @@ to {
 
 	<%
 	String role = (String) mySession.getAttribute("role");
-
 	if ("STAFF".equals(role)) {
 	%>
 	<jsp:include page="staffSidebar.jsp" />
@@ -223,7 +222,6 @@ to {
 	<%
 	PatientDao pDao = new PatientDao();
 	ReportDao rDao = new ReportDao();
-
 	int totalPatient = pDao.totalPatients();
 	int totalReport = rDao.totalReports();
 	int pendingReport = rDao.totalPendingReports();
@@ -234,9 +232,19 @@ to {
 		<%@ include file="../Components/message.jsp"%>
 
 		<div class="page-head">
-			<h2><%=u.getName()%></h2>
-			<p>Track report flow, monitor pending work, and manage patient
-				records quickly from one place.</p>
+			<div class="d-flex justify-content-between align-items-start">
+				<div>
+					<h2>
+						<%=u.getName()%>
+					</h2>
+					<p>Track report flow, monitor pending work, and manage patient
+						records quickly from one place.</p>
+				</div>
+				<button onclick="history.back()"
+					class="btn btn-outline-secondary btn-sm">
+					<i class="fas fa-arrow-left me-2"></i>Back
+				</button>
+			</div>
 		</div>
 
 		<div class="stats-grid">
@@ -245,7 +253,9 @@ to {
 					<i class="fa-solid fa-users"></i>
 				</div>
 				<p class="stat-label">Registered Patients</p>
-				<p class="stat-value"><%=totalPatient%></p>
+				<p class="stat-value">
+					<%=totalPatient%>
+				</p>
 				<p class="stat-meta">Updated from central patient records</p>
 			</div>
 
@@ -254,7 +264,9 @@ to {
 					<i class="fa-solid fa-file-lines"></i>
 				</div>
 				<p class="stat-label">Reports Uploaded</p>
-				<p class="stat-value"><%=totalReport%></p>
+				<p class="stat-value">
+					<%=totalReport%>
+				</p>
 				<p class="stat-meta">Complete historical report volume</p>
 			</div>
 
@@ -263,7 +275,9 @@ to {
 					<i class="fa-solid fa-hourglass-half"></i>
 				</div>
 				<p class="stat-label">Pending Reports</p>
-				<p class="stat-value"><%=pendingReport%></p>
+				<p class="stat-value">
+					<%=pendingReport%>
+				</p>
 				<p class="stat-meta">Awaiting review and final publishing</p>
 			</div>
 

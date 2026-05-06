@@ -141,9 +141,10 @@ h1, h2, h3, h4, h5 {
 							<div
 								class="d-flex justify-content-between align-items-center mb-3">
 								<h4 class="fw-bold mb-0">Enter OTP</h4>
-								<a
-									href="<%="signup".equals(work) ? "signup.jsp" : "forgetPassword.jsp"%>"
-									class="back-link"> ← Back </a>
+								<button onclick="history.back()"
+									class="btn btn-outline-secondary btn-sm">
+									<i class="fas fa-arrow-left"></i>
+								</button>
 							</div>
 
 							<%@ include file="Components/message.jsp"%>

@@ -4,6 +4,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -115,7 +116,6 @@ body {
 
 	<%
 	String role = (String) mySession.getAttribute("role");
-
 	if ("ADMIN".equals(role)) {
 	%>
 	<jsp:include page="adminSidebar.jsp" />
@@ -129,9 +129,17 @@ body {
 	%>
 
 	<div class="main-content">
-		<h2 class="page-title">All Staff</h2>
-		<p class="page-subtitle">Review Staff records, and take admin
-			actions.</p>
+		<div class="d-flex justify-content-between align-items-start mb-3">
+			<div>
+				<h2 class="page-title">All Staff</h2>
+				<p class="page-subtitle">Review Staff records, and take admin
+					actions.</p>
+			</div>
+			<button onclick="history.back()"
+				class="btn btn-outline-secondary btn-sm">
+				<i class="fas fa-arrow-left me-2"></i>Back
+			</button>
+		</div>
 
 		<div class="panel">
 			<div class="row g-2 filter-row mb-3">
@@ -191,15 +199,15 @@ body {
 	</div>
 
 	<script>
-setTimeout(function() {
-    let alert = document.getElementById("alertMsg");
-    if (alert) {
-        alert.classList.remove("show");
-        alert.classList.add("fade");
-        setTimeout(() => alert.remove(), 500);
-    }
-}, 3000); // 3 seconds
-</script>
+											setTimeout(function () {
+												let alert = document.getElementById("alertMsg");
+												if (alert) {
+													alert.classList.remove("show");
+													alert.classList.add("fade");
+													setTimeout(() => alert.remove(), 500);
+												}
+											}, 3000); // 3 seconds
+										</script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

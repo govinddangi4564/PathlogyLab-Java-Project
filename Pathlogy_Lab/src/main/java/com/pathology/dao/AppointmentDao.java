@@ -395,13 +395,14 @@ public class AppointmentDao {
 		return list;
 	}
 
-	public List<Appointment> myAppointment(int id) {
+	public List<Appointment> myAppointment(String patientId) {
 		List<Appointment> list = new LinkedList<Appointment>();
 
 		try (Connection con = DBConnection.getConnection();
-				PreparedStatement pst = con.prepareStatement("SELECT * FROM appointments")) {
+				PreparedStatement pst = con.prepareStatement(
+						"SELECT * FROM appointments WHERE patient_id = ? ORDER BY appointment_date DESC")) {
 
-			pst.setInt(1, id);
+			pst.setString(1, patientId);
 
 			ResultSet rs = pst.executeQuery();
 

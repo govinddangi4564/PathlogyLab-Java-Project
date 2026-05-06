@@ -135,6 +135,14 @@ h1, h2, h3, h4, h5 {
 						<div class="form-panel">
 							<div
 								class="d-flex justify-content-between align-items-center mb-3">
+								<h3 class="fw-bold mb-0">Update Password</h3>
+								<button onclick="history.back()"
+									class="btn btn-outline-secondary btn-sm">
+									<i class="fas fa-arrow-left"></i>
+								</button>
+							</div>
+							<div
+								class="d-flex justify-content-between align-items-center mb-3">
 								<h4 class="fw-bold mb-0">New Password</h4>
 							</div>
 
@@ -190,4 +198,3 @@ h1, h2, h3, h4, h5 {
 </body>
 
 </html>
-
