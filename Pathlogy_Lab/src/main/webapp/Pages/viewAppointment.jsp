@@ -306,15 +306,15 @@ body {
 
 					<!-- All Appointments -->
 					<a href="<%=request.getContextPath()%>/viewAppointmentReport"
-						class="btn btn-secondary"> <i class="fa-solid fa-eye me-2"></i>All
-						Appointments
+						onclick="showLoader()" class="btn btn-secondary"> <i
+						class="fa-solid fa-eye me-2"></i>All Appointments
 					</a>
 
 					<!-- Today's Appointments -->
 					<a
 						href="<%=request.getContextPath()%>/viewAppointmentReport?key=today"
-						class="btn btn-secondary"> <i class="fa-solid fa-eye me-2"></i>Today's
-						Appointments
+						onclick="showLoader()" class="btn btn-secondary"> <i
+						class="fa-solid fa-eye me-2"></i>Today's Appointments
 					</a>
 
 					<!-- New Appointment -->

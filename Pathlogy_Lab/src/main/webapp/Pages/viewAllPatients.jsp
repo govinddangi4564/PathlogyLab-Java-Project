@@ -294,16 +294,18 @@ body {
 						data-bs-toggle="dropdown">Sort By</button>
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item"
-							href="sortPatients?sort=id&order=asc">Newest First</a></li>
+							href="<%=request.getContextPath()%>/sortPatients?sort=id&order=asc">Newest
+								First</a></li>
 						<li><a class="dropdown-item"
-							href="sortPatients?sort=id&order=desc">Oldest First</a></li>
+							href="<%=request.getContextPath()%>/sortPatients?sort=id&order=desc">Oldest
+								First</a></li>
 						<li><a class="dropdown-item"
-							href="sortPatients?sort=patient_name&order=asc">Name (A <i
-								class="fa-solid fa-arrow-right"></i> Z)
+							href="<%=request.getContextPath()%>/sortPatients?sort=patient_name&order=asc">Name
+								(A <i class="fa-solid fa-arrow-right"></i> Z)
 						</a></li>
 						<li><a class="dropdown-item"
-							href="sortPatients?sort=patient_name&order=desc">Name (Z <i
-								class="fa-solid fa-arrow-right"></i> A)
+							href="<%=request.getContextPath()%>/sortPatients?sort=patient_name&order=desc">Name
+								(Z <i class="fa-solid fa-arrow-right"></i> A)
 						</a></li>
 					</ul>
 				</div>
@@ -353,8 +355,7 @@ body {
 								href="<%=request.getContextPath()%>/viewReport?pId=<%=p.getPatientId()%>"
 								class="btn btn-success btn-sm"> View Reports </a> <%
  if ("ADMIN".equalsIgnoreCase(role)) {
- %> <a
-								href="deletePatient?pId=<%=p.getPatientId()%>"
+ %> <a href="deletePatient?pId=<%=p.getPatientId()%>"
 								class="btn btn-outline-danger btn-sm"
 								onclick="return confirm('Are you sure you want to delete this patient?');">
 									Delete Patient </a> <%
